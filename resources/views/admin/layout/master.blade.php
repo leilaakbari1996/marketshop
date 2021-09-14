@@ -1,3 +1,5 @@
 @include('admin.layout.header')
+@include('admin.layout.errors')
+@include('admin.layout.success')
 @yield('content')
 @include('admin.layout.footer')
