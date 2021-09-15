@@ -71,6 +71,29 @@
                       </li>
                     </ul>
                 </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
+                        محصولات
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{{route('admin.product.create')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>ایجاد</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.product.index')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>لیست</p>
+                        </a>
+                      </li>
+                    </ul>
+                </li>
             <li class="nav-item has-treeview menu-open">
               <a href="#" class="nav-link active">
                 <i class="nav-icon fa fa-dashboard"></i>
