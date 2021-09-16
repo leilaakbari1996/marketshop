@@ -34,18 +34,24 @@
                       </p>
                     </a>
                     <ul class="nav nav-treeview">
-                      <li class="nav-item">
-                        <a href="{{route('admin.category.create')}}" class="nav-link">
-                          <i class="fa fa-circle-o nav-icon"></i>
-                          <p>ایجاد</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="{{route('admin.category.index')}}" class="nav-link">
-                          <i class="fa fa-circle-o nav-icon"></i>
-                          <p>لیست</p>
-                        </a>
-                      </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.category.create')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>ایجاد</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.category.index')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>لیست</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.category.special.create')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>دسته بندی ویژه</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
