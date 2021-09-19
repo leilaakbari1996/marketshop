@@ -7,12 +7,12 @@
       <ul class="nav navbar-nav">
         <li><a class="home_link" title="خانه" href="{{route('client.index')}}">خانه</a></li>
         @foreach ($categories as $category)
-            <li class="dropdown"><a href="category.html">{{$category->name}}</a>
+            <li class="dropdown"><a href="{{route('client.category.index',$category)}}">{{$category->name}}</a>
                 @if ($category->childrens()->count() > 0)
                     <div class="dropdown-menu">
                         <ul>
                             @foreach ($category->childrens as $childCategory)
-                                <li><a href="#">{{$childCategory->name}}
+                                <li><a href="{{route('client.category.index',$childCategory)}}">{{$childCategory->name}}
                                     @if ($childCategory->childrens()->count() > 0)
                                         <span>&rsaquo;</span>
                                     @endif
@@ -20,9 +20,9 @@
                                     @if ($childCategory->childrens()->count() > 0)
                                         <div class="dropdown-menu">
                                             <ul>
-                                                    @foreach ($childCategory->childrens as $subCategory)
-                                                        <li><a href="#">{{$subCategory->name}}</a> </li>
-                                                    @endforeach
+                                                @foreach ($childCategory->childrens as $subCategory)
+                                                    <li><a href="{{route('client.category.index',$subCategory)}}">{{$subCategory->name}}</a> </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     @endif

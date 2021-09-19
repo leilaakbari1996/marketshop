@@ -25,6 +25,15 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
+
+                 <li class="nav-item has-treeview">
+                    <a href="{{route('client.index')}}" class="nav-link">
+                      <p>
+                        خانه
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                       <i class="nav-icon fa fa-table"></i>
@@ -96,6 +105,12 @@
                         <a href="{{route('admin.product.index')}}" class="nav-link">
                           <i class="fa fa-circle-o nav-icon"></i>
                           <p>لیست</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.product.special.index')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>محصولات ویژه</p>
                         </a>
                       </li>
                     </ul>

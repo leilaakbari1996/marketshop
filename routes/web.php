@@ -5,7 +5,9 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\HomeController as AdminHomeController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SpecialCategoryController;
+use App\Http\Controllers\admin\SpecialProductController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\client\ProductController as ClientProductController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('')->name('client.')->group(function(){
     Route::get('/',[HomeController::class,'index'])->name('index');
     Route::get('/product/{product}',[ClientProductController::class,'show'])->name('product.show');
+    Route::get('/category/{category}',[ClientCategoryController::class,'index'])->name('category.index');
 });
 Route::prefix('/adminpanel')->name('admin.')->group(function(){
     Route::get('/',[AdminHomeController::class,'index'])->name('index');
@@ -32,5 +35,8 @@ Route::prefix('/adminpanel')->name('admin.')->group(function(){
     Route::post('/category/special',[SpecialCategoryController::class,'store'])->name('category.special.store');
     Route::resource('category',CategoryController::class);
     Route::resource('brand',AdminBrandController::class);
+    Route::get('/product/special',[SpecialProductController::class,'index'])->name('product.special.index');
+    Route::post('/product/{product}/special',[SpecialProductController::class,'store'])
+    ->name('product.special.store');
     Route::resource('product',ProductController::class);
 });

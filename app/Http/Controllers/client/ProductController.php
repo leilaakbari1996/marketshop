@@ -51,7 +51,6 @@ class ProductController extends Controller
         return view('client.product.show',[
             'title' => $product->name,
             'product' => $product,
-            'categories' => Category::query()->where('category_id',null)->get()
         ]);
     }
 
