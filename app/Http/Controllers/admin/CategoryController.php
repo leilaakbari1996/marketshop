@@ -32,7 +32,7 @@ class CategoryController extends Controller
     {
         return view('admin.category.create',[
             'title' => 'ایجاد دسته بندی',
-            'categories' => Category::all()
+            'categories' => Category::getCategoryAndSubcategory()
         ]);
     }
 
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         return view('admin.category.edit',[
-            'categories' => Category::all(),
+            'categories' => Category::getCategoryAndSubcategory(),
             'categoryMain' => $category,
             'title' => 'ویرایش دسته بندی '.$category->name
         ]);

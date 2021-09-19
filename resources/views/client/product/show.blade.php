@@ -6,13 +6,24 @@
       <ul class="breadcrumb">
         <li itemscope>
             <a href="{{route('client.index')}}" itemprop="url"><span itemprop="title"
-                ><i class="fa fa-home"></i></span></a></li>
-        <li itemscope>
-            <span itemprop="title">{{$product->category->name}}</span>
+                ><i class="fa fa-home"></i></span>
+            </a>
         </li>
-        <li itemscope>
-            <span itemprop="title">{{$product->name}}</span>
+        @if ($product->category->parent)
+            @if ($product->category->parent->parent)
+                <li><a href="{{route('client.category.index',$product->category->parent->parent)}}">
+                    {{$product->category->parent->parent->name}}</a>
+                </li>
+            @endif
+            <li><a href="{{route('client.category.index',$product->category->parent)}}">
+                {{$product->category->parent->name}}</a>
+            </li>
+        @endif
+        <li>
+            <a href="{{route('client.category.index',$product->category)}}">
+            {{$product->category->name}}</a>
         </li>
+        <li>{{$product->name}}</li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">

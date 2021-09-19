@@ -17,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->foreignId('brand_id')->constrained();
             $table->foreignId('category_id')->constrained();
+            $table->boolean('is_special')->default(0);
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('image');
