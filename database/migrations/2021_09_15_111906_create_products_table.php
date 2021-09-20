@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('image');
             $table->text('desc');
             $table->integer('number');
+            $table->unsignedBigInteger('offer')->default(0);
             $table->integer('price');
             $table->timestamps();
         });

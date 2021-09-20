@@ -15,4 +15,15 @@ class Product extends Model
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
+    public function getCostWithDiscountAttribute(){
+        if($this->offer > 0){
+            $offer = $this->price - $this->price * $this->offer/100;
+        }else{
+            $offer = $this->price;
+        }
+        return $offer;
+    }
+    public static function get_image($path){
+        return str_replace('public','/storage',$path);
+    }
 }

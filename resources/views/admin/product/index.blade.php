@@ -24,8 +24,8 @@
                                 <td>برند</td>
                                 <td>قیمت</td>
                                 <td>تعداد</td>
+                                <td>تخفیف</td>
                                 <td>تصویر</td>
-
                                 <td>ویرایش</td>
                                 <td>حذف</td>
                             </tr>
@@ -40,6 +40,14 @@
                                     <td>{{$product->brand->name}}</td>
                                     <td>{{$product->price}}</td>
                                     <td>{{$product->number}}</td>
+                                    <td>
+                                        @if($product->offer > 0)
+                                            {{$product->offer}}%
+                                            <a href="{{route('admin.product.offer.edit',$product)}}" class="btn btn-sm btn-primary">ویرایش تخفیف</a>
+                                        @else
+                                            <a href="{{route('admin.product.offer.create',$product)}}" class="btn btn-sm btn-success">ایجاد تخفیف</a>
+                                        @endif
+                                    </td>
                                     <td>
                                         <img src="{{str_replace('public','/storage',$product->image)}}"
                                         alt="{{$product->name}}" width="50">

@@ -54,9 +54,13 @@
                         @endif
                 </ul>
                 <ul class="price-box">
-                  <li class="price" itemprop="offers" itemscope><span class="price-old">{{$product->price}} تومان</span> <span itemprop="price">10 میلیون تومان<span itemprop="availability" content="موجود"></span></span></li>
-                  <li></li>
-                  <li>بدون مالیات : 9 میلیون تومان</li>
+                   <li class="price" itemprop="offers" itemscope>
+                    <span class="price-new">{{$product->cost_with_discount}} تومان   </span>&nbsp;&nbsp;&nbsp;
+                        @if ($product->offer > 0)
+                            <span class="price-old" style="font-size: 19px">{{$product->price}} تومان</span>
+                        @endif
+                   </li>
+
                 </ul>
                 <div id="product">
                   <h3 class="subtitle">انتخاب های در دسترس</h3>

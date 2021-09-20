@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slider;
 use App\Models\Specialcategory;
 use App\Observers\BrandObserve;
 use App\Observers\CategoryObserve;
 use App\Observers\ProductObserve;
+use App\Observers\SliderObserve;
 use App\Observers\SpecialCategoryObserve;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -36,12 +38,19 @@ class AppServiceProvider extends ServiceProvider
         Brand::observe(BrandObserve::class);
         Product::observe(ProductObserve::class);
         Specialcategory::observe(SpecialCategoryObserve::class);
+        Slider::observe(SliderObserve::class);
 
 
 
         view()->composer('client.*',function($view){
             $view->with([
                 'categories' => Category::query()->where('category_id',null)->get(),
+                'brands' => Brand::all()
+            ]);
+        });
+        view()->composer('admin.*',function($view){
+            $view->with([
+                'sliders' => Slider::all(),
             ]);
         });
 

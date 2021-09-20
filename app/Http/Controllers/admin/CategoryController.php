@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Models\Specialcategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -106,6 +107,7 @@ class CategoryController extends Controller
                 'category_id' => 'این دسته بندی نمیتواند حذف شود چون والد دسته بندی های دیگر می باشد.'
             ]);
         }
+        Storage::delete($category->image);
         $category->delete();
         return redirect(route('admin.category.index'));
 

@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -130,6 +131,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        Storage::delete($product->image);
         $product->delete();
         return redirect(route('admin.product.index'));
     }
