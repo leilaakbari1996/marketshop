@@ -7,6 +7,7 @@ use App\Http\Requests\BrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
@@ -111,6 +112,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        Storage::delete($brand->image);
         $brand->delete();
         return redirect(route('admin.brand.index'));
     }

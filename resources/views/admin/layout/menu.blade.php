@@ -28,11 +28,37 @@
 
                  <li class="nav-item has-treeview">
                     <a href="{{route('client.index')}}" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
                       <p>
                         خانه
+
+                      </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
+                        اسلایدر
                         <i class="fa fa-angle-left right"></i>
                       </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        @if (count($sliders) < 3)
+                            <li class="nav-item">
+                                <a href="{{route('admin.slider.create')}}" class="nav-link">
+                                <i class="fa fa-circle-o nav-icon"></i>
+                                <p>ایجاد</p>
+                                </a>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{route('admin.slider.index')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>لیست</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">

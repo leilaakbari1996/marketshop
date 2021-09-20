@@ -226,7 +226,13 @@
                             <div class="caption">
                                 <h4><a href="{{route('client.product.show',$product)}}"> {{$product->name}} </a></h4>
                                 <p class="description">  {{$product->desc}}...</p>
-                                <p class="price"> <span class="price-new">در حال تکمیل</span> <span class="price-old">120000 تومان</span> <span class="saving">-26%</span> <span class="price-tax">بدون مالیات : 90000 تومان</span> </p>
+                                <p class="price">
+                                    <span class="price-new">{{$product->cost_with_discount}} تومان   </span>&nbsp;&nbsp;&nbsp;
+                                    @if ($product->offer > 0)
+                                        <span class="price-old" style="font-size: 19px">{{$product->price}} تومان</span>
+                                        <span class="saving">-{{$product->offer}}%</span>
+                                    @endif
+                                </p>
                             </div>
                             <div class="button-group">
                                 <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
