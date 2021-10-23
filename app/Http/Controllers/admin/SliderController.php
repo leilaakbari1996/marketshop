@@ -48,6 +48,7 @@ class SliderController extends Controller
         ]);
         $sliders = Slider::all();
         $sliderIds = $sliders->pluck('id');
+        $shom = 0;
         for($i = 1 ; $i < 4 ; $i++){
             foreach($sliderIds as $sliderId){
                 if($sliderId == $i){

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Product;
+use App\Models\ProductProperty;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -51,6 +53,9 @@ class ProductController extends Controller
         return view('client.product.show',[
             'title' => $product->name,
             'product' => $product,
+            'user' => auth()->user(),
+            'comments' => $product->comments()->where('is_confirm',1)->get(),
+            'propertyGroups' => ProductProperty::query()->where('product_id',$product->id)->get()
         ]);
     }
 

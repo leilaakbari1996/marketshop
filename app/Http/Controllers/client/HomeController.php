@@ -5,7 +5,9 @@ namespace App\Http\Controllers\client;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Orderdeital;
 use App\Models\Product;
+use App\Models\Propesal;
 use App\Models\Slider;
 use App\Models\Specialcategory;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index(){
+        Product::offer();
         $products = Product::query()->orderBy('id','DESC')->get();
         if(count($products) < 10){
             $newProducts = $products;
@@ -21,12 +24,14 @@ class HomeController extends Controller
                 $newProducts[] = $products[$i];
             }
         }
-        $specialCategory =  Specialcategory::all()->first()->category;
+        $category_id = Specialcategory::query()->first()->category_id;
         return view('client.home',[
             'title' => 'مارکت شاپ',
-            'specialProducts' => Product::query()->where('is_special',1)->get(),
-            'specialCategory' => Specialcategory::query()->first(),
+            'specialCategoryProduct' => Category::getIdAllSubCategory($category_id),
+            'specialCategory' => Specialcategory::all(),
+            'propesalProducts' => Propesal::all(),
             'newProducts' => $newProducts,
+            'productOffers' => Product::offer(),
             'sliders' => Slider::all()
         ]);
     }

@@ -33,19 +33,21 @@
                                         <div class="owl-carousel product_carousel_tab">
                                             <div class="product-thumb">
                                                 <div class="image">
-                                                    <a href="{{route('client.product.show',$product)}}">
+                                                    <a href="{{route('admin.product.edit',$product)}}">
                                                         <img src="{{str_replace('public','/storage',$product->image)}}"
                                                         alt="{{$product->name}}" title="{{$product->name}}"
                                                         class="img-responsive" width="100" />
                                                     </a>
                                                 </div>
                                                 <div class="caption">
-                                                    <h4>
-                                                        <a href="{{route('client.product.show',$product)}}">{{$product->name}}</a>
-                                                    </h4>
-                                                    <p class="price"><span class="price-new">{{$product->price}} تومان</span>
-                                                         <span class="price-old">در حال تکمیل</span><span class="saving">
-                                                           تکمیل</span></p>
+                                                    <h4><a href="{{route('admin.product.edit',$product)}}"> {{$product->name}} </a></h4>
+                                                    <p class="price">
+                                                        <span class="price-new">{{$product->cost_with_discount}} تومان   </span>&nbsp;&nbsp;&nbsp;
+                                                        @if ($product->offer > 0)
+                                                            <span class="price-old" style="font-size: 19px">{{$product->price}} تومان</span>
+                                                            <span class="saving">-{{$product->offer}}%</span>
+                                                        @endif
+                                                    </p>
                                                 </div>
                                                 <div class="button-group">
                                                     @if ($product->is_special == 1)
@@ -80,18 +82,7 @@
 
 
 
-        <div class="button-group">
-            @if ($product->is_special == 1)
-                <input type="button"  onClick="deleteOfSpecialProduct({{$product->id}})"
-                value="حذف از محصولات ویژه"
-                 id="btn-delete-{{$product->id}}" class="btn btn-sm btn-danger">
-            @else
-                <input type="button" id="btn-add-{{$product->id}}" class="btn btn-sm btn-success"
-                onClick="addToSpecialProduct({{$product->id}})" value="افزودن به محصولات ویژه">
-            @endif
 
-
-        </div>
 @endsection
 @section('script')
     <script>

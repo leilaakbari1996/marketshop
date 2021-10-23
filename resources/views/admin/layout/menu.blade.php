@@ -64,6 +64,71 @@
                     <a href="#" class="nav-link">
                       <i class="nav-icon fa fa-table"></i>
                       <p>
+                        نقش ها
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.role.create')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>ایجاد</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.role.index')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>لیست</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
+                        ارتباط پشتیبانی با مردم
+                        @if ($suports->count() > 0)
+                            <span class="badge badge-warning navbar-badge">{{$suports->count()}}</span>
+                        @endif
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.suport.index')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>لیست</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
+
+                        نظرات
+                        @if ($comments->count() > 0)
+                            <span class="badge badge-warning navbar-badge">{{$comments->count()}}</span>
+                        @endif
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.comment.index')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>لیست</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
                         دسته بندی ها
                         <i class="fa fa-angle-left right"></i>
                       </p>
@@ -116,6 +181,75 @@
                     <a href="#" class="nav-link">
                       <i class="nav-icon fa fa-table"></i>
                       <p>
+                        گروه ویژگی ها
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{{route('admin.propertyGroup.create')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>ایجاد</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.propertyGroup.index')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>لیست</p>
+                        </a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
+                         ویژگی ها
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{{route('admin.property.create')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>ایجاد</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.property.index')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>لیست</p>
+                        </a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
+                          کد تخفیف
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{{route('admin.property.create')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>ایجاد</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.property.index')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>لیست</p>
+                        </a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
                         محصولات
                         <i class="fa fa-angle-left right"></i>
                       </p>
@@ -137,6 +271,12 @@
                         <a href="{{route('admin.product.special.index')}}" class="nav-link">
                           <i class="fa fa-circle-o nav-icon"></i>
                           <p>محصولات ویژه</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="{{route('admin.propesal.index')}}" class="nav-link">
+                          <i class="fa fa-circle-o nav-icon"></i>
+                          <p>محصولات پیشنهادی</p>
                         </a>
                       </li>
                     </ul>
