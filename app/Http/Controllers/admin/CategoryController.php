@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\PropertyGroup;
 use App\Models\Specialcategory;
+use App\Observers\CategoryObserve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,7 +22,8 @@ class CategoryController extends Controller
     {
         return view('admin.category.index',[
             'title' => 'لیست دسته بندی',
-            'categories' => Category::all()
+            'categories' => Category::all(),
+
         ]);
     }
 
@@ -33,7 +36,8 @@ class CategoryController extends Controller
     {
         return view('admin.category.create',[
             'title' => 'ایجاد دسته بندی',
-            'categories' => Category::getCategoryAndSubcategory()
+            'categories' => Category::getCategoryAndSubcategory(),
+            'propertyGroups' => PropertyGroup::all()
         ]);
     }
 
@@ -45,10 +49,11 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::query()->create([
+        $category = Category::query()->create([
             'category_id' => $request->get('category_id'),
             'name' => $request->get('name')
         ]);
+        $category->propertyGroups()->attach($request->get('propertyGroups'));
         return redirect(route('admin.category.index'));
     }
 
@@ -74,7 +79,8 @@ class CategoryController extends Controller
         return view('admin.category.edit',[
             'categories' => Category::getCategoryAndSubcategory(),
             'categoryMain' => $category,
-            'title' => 'ویرایش دسته بندی '.$category->name
+            'title' => 'ویرایش دسته بندی '.$category->name,
+            'propertyGroups' => PropertyGroup::all()
         ]);
     }
 
@@ -91,6 +97,8 @@ class CategoryController extends Controller
             'name' => $request->get('name'),
             'category_id' => $request->get('category_id')
         ]);
+        $category->propertyGroups()->sync($request->get('propertyGroups'));
+        session()->flash('success',' دسته بندی '.$category->name .'  با موفقیت ویرایش شد ');
         return redirect(route('admin.category.index'));
     }
 

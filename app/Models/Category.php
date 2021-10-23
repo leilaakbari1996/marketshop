@@ -41,4 +41,7 @@ class Category extends Model
         }
         return $categories;
     }
+    public function propertyGroups(){
+        return $this->belongsToMany(PropertyGroup::class);
+    }
 }

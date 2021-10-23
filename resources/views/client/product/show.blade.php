@@ -1,4 +1,17 @@
+@php
+    use App\Models\Cart;
+@endphp
 @extends('client.layout.master')
+@section('style')
+    <style>
+        .answer{
+            background: green;
+            color: white;
+            padding: 5px;
+
+        }
+    </style>
+@endsection
 @section('content')
   <div id="container">
     <div class="container">
@@ -11,19 +24,19 @@
         </li>
         @if ($product->category->parent)
             @if ($product->category->parent->parent)
-                <li><a href="{{route('client.category.index',$product->category->parent->parent)}}">
+                <li><a href="{{route('client.category.index',$product->category->parent->parent)}}" class="link" style="text-decoration: none">
                     {{$product->category->parent->parent->name}}</a>
                 </li>
             @endif
-            <li><a href="{{route('client.category.index',$product->category->parent)}}">
+            <li><a href="{{route('client.category.index',$product->category->parent)}}" class="link">
                 {{$product->category->parent->name}}</a>
             </li>
         @endif
         <li>
-            <a href="{{route('client.category.index',$product->category)}}">
+            <a href="{{route('client.category.index',$product->category)}}" class="link">
             {{$product->category->name}}</a>
         </li>
-        <li>{{$product->name}}</li>
+        <li><a href="#" class="link">{{$product->name}}</a></li>
       </ul>
       <!-- Breadcrumb End-->
       <div class="row">
@@ -36,7 +49,7 @@
                 <div class="image">
                     <img class="img-responsive" itemprop="image" id="zoom_01" src="{{str_replace('public','/storage',$product->image)}}"
                     title="{{$product->name}}" alt="{{$product->name}}"
-                    data-zoom-image="image/product/macbook_air_1-600x900.jpg" width="80%/>
+                    data-zoom-image="image/product/macbook_air_1-600x900.jpg" width="80%">
                 </div>
                 <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
                 <div class="image-additional" id="gallery_01"> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_1-600x900.jpg" data-image="image/product/macbook_air_1-350x525.jpg" title="لپ تاپ ایلین ور"> <img src="image/product/macbook_air_1-66x99.jpg" title="لپ تاپ ایلین ور" alt = "لپ تاپ ایلین ور"/></a> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_4-600x900.jpg" data-image="image/product/macbook_air_4-350x525.jpg" title="لپ تاپ ایلین ور"><img src="image/product/macbook_air_4-66x99.jpg" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_2-600x900.jpg" data-image="image/product/macbook_air_2-350x525.jpg" title="لپ تاپ ایلین ور"><img src="image/product/macbook_air_2-66x99.jpg" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_3-600x900.jpg" data-image="image/product/macbook_air_3-350x525.jpg" title="لپ تاپ ایلین ور"><img src="image/product/macbook_air_3-66x99.jpg" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a> </div>
@@ -76,17 +89,51 @@
                   </div>
                   <div class="cart">
                     <div>
-                      <div class="qty">
-                        <label class="control-label" for="input-quantity">تعداد</label>
-                        <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
-                        <a class="qtyBtn plus" href="javascript:void(0);">+</a><br />
-                        <a class="qtyBtn mines" href="javascript:void(0);">-</a>
-                        <div class="clear"></div>
-                      </div>
-                      <button type="button" id="button-cart" class="btn btn-primary btn-lg">افزودن به سبد</button>
+                        @include('client.product.quantity',[
+                            'product' => $product,
+                            'condition' => 0
+                        ])
+                        @auth
+                            @php
+                                if($product->is_cart){
+                                    $cart = Cart::get_session('cart');
+                                }
+                            @endphp
+                            <button class="btn btn-lg btn-primary" type="button"
+                            @if ($product->is_cart)
+                                onClick="addToCart({{$product->id }},1)"
+                            @else
+                                onClick="addToCart({{$product->id }},0)"
+                            @endif
+                            >
+                                <span id="basket-{{$product->id}}">
+                                    @if ($product->is_cart)
+                                    بروز رسانی سبد خرید
+                                    @else
+                                        افزودن به سبد خرید
+                                    @endif
+                                </span>
+                            </button>
+                        @else
+                            <a href="{{route('client.register.create')}}">
+                                <button class="btn btn-lg btn-primary" type="button"
+                                ><span>افزودن به سبد</span></button>
+                            </a>
+                        @endauth
                     </div>
                     <div>
-                      <button type="button" class="wishlist" onClick=""><i class="fa fa-heart"></i> افزودن به علاقه مندی ها</button>
+
+                        @auth
+                        <button class="like-{{$product->id}} wishlist" id="like-{{$product->id}}" type="button" data-toggle="tooltip"
+
+                            onClick="like({{$product->id}})">
+                                <i class="fa fa-heart
+                                    @if ($product->is_like)
+                                        like
+                                    @endif
+                                " ></i><span id="like-span-{{$product->id}}">@if ($product->is_like)حذف از علاقه مندی ها@else افزودن به علاقه مندی ها@endif</span>
+                            </button>
+                    @endauth
                       <br />
                       <button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button>
                     </div>
@@ -94,7 +141,6 @@
                 </div>
                 <div class="rating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
                   <meta itemprop="ratingValue" content="0" />
-                  <p><span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span> <a onClick="$('a[href=\'#tab-review\']').trigger('click'); return false;" href=""><span itemprop="reviewCount">1 بررسی</span></a> / <a onClick="$('a[href=\'#tab-review\']').trigger('click'); return false;" href="">یک بررسی بنویسید</a></p>
                 </div>
                 <hr>
                 <!-- AddThis Button BEGIN -->
@@ -103,120 +149,120 @@
                 <!-- AddThis Button END -->
               </div>
             </div>
+            @include('admin.layout.success')
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab-description" data-toggle="tab">توضیحات</a></li>
               <li><a href="#tab-specification" data-toggle="tab">مشخصات</a></li>
-              <li><a href="#tab-review" data-toggle="tab">بررسی (2)</a></li>
+              <li><a href="#tab-review" data-toggle="tab">ثبت و دیدن نظرات </a></li>
             </ul>
             <div class="tab-content">
               <div itemprop="description" id="tab-description" class="tab-pane active">
                 <div>
-                  <p><b>پردازشگر اینتل core i7</b></p>
-                  <p>مک بوک جدید با پردازشگر اینتل core i7 از همیشه سریعتر ظاهر شده و آماده است که گوی سبقت را از رقبا بگیرد.</p>
-                  <p><b>16 گیگابایت رم و هارد دیسک های بزرگتر</b></p>
-                  <p>ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-                  <p><b>طراحی خارق العاده و بی نظیر</b></p>
-                  <p>مک بوک در واقع ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-                  <p><b>با دوربین i-Sight درون ساخت</b></p>
-                  <p>بدون نیاز به ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+                   <p><b>{{$product->desc}}</b></p>
                 </div>
               </div>
               <div id="tab-specification" class="tab-pane">
                 <div id="tab-specification" class="tab-pane">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <td colspan="2"><strong>حافظه</strong></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>تست 1</td>
-                      <td>8gb</td>
-                    </tr>
-                  </tbody>
-                  </table>
-                <table class="table table-bordered">
-                <thead>
-                    <tr>
-                      <td colspan="2"><strong>پردازشگر</strong></td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>تعداد هسته</td>
-                      <td>1</td>
-                    </tr>
-                  </tbody>
-                </table>
+                    @if ($product->is_property_for_product)
+                        @foreach ($propertyGroups as $propertyGroup)
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td colspan="2"><strong>{{$propertyGroup->name}}</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($product->propertyProduct() as $property)
+                                            <tr>
+                                                <td>{{$property->property}}</td>
+                                                <td>{{$property->value}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                        @endforeach
+                    @else
+                       <p>هنوز هیچ مشخصاتی ثبت نشده است.</p>
+                    @endif
               </div>
               </div>
               <div id="tab-review" class="tab-pane">
-                <form class="form-horizontal">
                   <div id="review">
                     <div>
-                      <table class="table table-striped table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style="width: 50%;"><strong><span>هاروی</span></strong></td>
-                            <td class="text-right"><span>1395/1/20</span></td>
-                          </tr>
-                          <tr>
-                            <td colspan="2"><p>ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-                              <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <table class="table table-striped table-bordered">
-                        <tbody>
-                          <tr>
-                            <td style="width: 50%;"><strong><span>اندرسون</span></strong></td>
-                            <td class="text-right"><span>1395/1/20</span></td>
-                          </tr>
-                          <tr>
-                            <td colspan="2"><p>ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
-                              <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div></td>
-                          </tr>
-                        </tbody>
-                      </table>
+                        <h2>نظر یا پیشنهاد شما</h2>
+                        <form action="{{route('client.comment.store',$product)}}" method="post">
+                            @csrf
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                <label for="input-name" class="control-label">ایمیل</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                @auth value="{{auth()->user()->email}}" disabled @endauth dir="ltr">
+                                </div>
+                            </div><br>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label for="input-review" class="control-label">نظر شما</label>
+                                    <textarea class="form-control" id="comment"  name="comment"></textarea>
+                                </div>
+                            </div><br>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                <label class="control-label">رتبه</label>
+                                &nbsp;&nbsp;&nbsp; بد&nbsp;
+                                <input type="radio" value="1" name="rating">
+                                &nbsp;
+                                <input type="radio" value="2" name="rating">
+                                &nbsp;
+                                <input type="radio" value="3" name="rating">
+                                &nbsp;
+                                <input type="radio" value="4" name="rating">
+                                &nbsp;
+                                <input type="radio" value="5" name="rating">
+                                &nbsp;خوب</div>
+                            </div>
+                            <div class="buttons">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" id="button-review" type="submit" >ادامه</button>
+                                </div>
+                            </div>
+                        </form>
+                        @if ($comments->count() > 0)
+                            <h2> مشاهده ی نظرات ({{$comments->count()}})</h2>
+                            @foreach ($comments as $comment)
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 50%;"><strong><span>{{$comment->user->name}}</span></strong></td>
+                                            <td class="text-right"><span>{{$comment->created_at}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><p>{{$comment->comment}}</p>
+                                            <div class="rating">
+                                                <span class="fa">
+                                                    <?php
+                                                        for($i=0 ; $i < $comment->rating ; $i++){
+
+                                                            ?> <i class="fas fa-star"></i><?php
+                                                        }
+                                                        $shom = 5 - $comment->rating;
+                                                        if($shom > 0){
+                                                            for($i=0 ; $i < $shom ; $i++){
+                                                                ?> <i class="fas fa-star" style="color: rgb(209, 197, 197)"></i><?php
+                                                            }
+                                                        }
+                                                    ?>
+                                                </span>  </div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            @endforeach
+                        @else
+                            <h2>هنوز هیچ نظری ثبت نشده است...</h2>
+                        @endif
+
                     </div>
                     <div class="text-right"></div>
                   </div>
-                  <h2>یک بررسی بنویسید</h2>
-                  <div class="form-group required">
-                    <div class="col-sm-12">
-                      <label for="input-name" class="control-label">نام شما</label>
-                      <input type="text" class="form-control" id="input-name" value="" name="name">
-                    </div>
-                  </div>
-                  <div class="form-group required">
-                    <div class="col-sm-12">
-                      <label for="input-review" class="control-label">بررسی شما</label>
-                      <textarea class="form-control" id="input-review" rows="5" name="text"></textarea>
-                      <div class="help-block"><span class="text-danger">توجه :</span> HTML بازگردانی نخواهد شد!</div>
-                    </div>
-                  </div>
-                  <div class="form-group required">
-                    <div class="col-sm-12">
-                      <label class="control-label">رتبه</label>
-                      &nbsp;&nbsp;&nbsp; بد&nbsp;
-                      <input type="radio" value="1" name="rating">
-                      &nbsp;
-                      <input type="radio" value="2" name="rating">
-                      &nbsp;
-                      <input type="radio" value="3" name="rating">
-                      &nbsp;
-                      <input type="radio" value="4" name="rating">
-                      &nbsp;
-                      <input type="radio" value="5" name="rating">
-                      &nbsp;خوب</div>
-                  </div>
-                  <div class="buttons">
-                    <div class="pull-right">
-                      <button class="btn btn-primary" id="button-review" type="button">ادامه</button>
-                    </div>
-                  </div>
-                </form>
               </div>
             </div>
             <h3 class="subtitle">محصولات مرتبط</h3>
@@ -313,100 +359,7 @@
         <!--Middle Part End -->
         <!--Right Part Start -->
         <aside id="column-right" class="col-sm-3 hidden-xs">
-          <h3 class="subtitle">پرفروش ها</h3>
-          <div class="side-item">
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/apple_cinema_30-50x75.jpg" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">تی شرت کتان مردانه</a></h4>
-                <p class="price"><span class="price-new">110000 تومان</span> <span class="price-old">122000 تومان</span> <span class="saving">-10%</span></p>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/iphone_1-50x75.jpg" alt="آیفون 7" title="آیفون 7" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">آیفون 7</a></h4>
-                <p class="price"> 2200000 تومان </p>
-                <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span></div>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/macbook_1-50x75.jpg" alt="آیدیا پد یوگا" title="آیدیا پد یوگا" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">آیدیا پد یوگا</a></h4>
-                <p class="price"> 900000 تومان </p>
-                <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/sony_vaio_1-50x75.jpg" alt="کفش راحتی مردانه" title="کفش راحتی مردانه" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">کفش راحتی مردانه</a></h4>
-                <p class="price"> <span class="price-new">32000 تومان</span> <span class="price-old">12 میلیون تومان</span> <span class="saving">-25%</span> </p>
-                <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/FinePix-Long-Zoom-Camera-50x75.jpg" alt="دوربین فاین پیکس" title="دوربین فاین پیکس" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">دوربین فاین پیکس</a></h4>
-                <p class="price">122000 تومان</p>
-              </div>
-            </div>
-          </div>
-          <div class="list-group">
-            <h3 class="subtitle">محتوای سفارشی</h3>
-            <p>این یک بلاک محتواست. هر نوع محتوایی شامل html، نوشته یا تصویر را میتوانید در آن قرار دهید. </p>
-            <p> در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد. </p>
-            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
-          </div>
-          <h3 class="subtitle">ویژه</h3>
-          <div class="side-item">
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/macbook_pro_1-50x75.jpg" alt=" کتاب آموزش باغبانی " title=" کتاب آموزش باغبانی " class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">کتاب آموزش باغبانی</a></h4>
-                <p class="price"> <span class="price-new">98000 تومان</span> <span class="price-old">120000 تومان</span> <span class="saving">-26%</span> </p>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/samsung_tab_1-50x75.jpg" alt="تبلت ایسر" title="تبلت ایسر" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">تبلت ایسر</a></h4>
-                <p class="price"> <span class="price-new">98000 تومان</span> <span class="price-old">240000 تومان</span> <span class="saving">-5%</span> </p>
-                <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/apple_cinema_30-50x75.jpg" alt="تی شرت کتان مردانه" title="تی شرت کتان مردانه" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="http://demo.harnishdesign.net/opencart/marketshop/v1/index.php?route=product/product&amp;product_id=42">تی شرت کتان مردانه</a></h4>
-                <p class="price"> <span class="price-new">110000 تومان</span> <span class="price-old">122000 تومان</span> <span class="saving">-10%</span> </p>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/nikon_d300_1-50x75.jpg" alt="دوربین دیجیتال حرفه ای" title="دوربین دیجیتال حرفه ای" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">دوربین دیجیتال حرفه ای</a></h4>
-                <p class="price"> <span class="price-new">92000 تومان</span> <span class="price-old">98000 تومان</span> <span class="saving">-6%</span> </p>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/nikon_d300_5-50x75.jpg" alt="محصولات مراقبت از مو" title="محصولات مراقبت از مو" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">محصولات مراقبت از مو</a></h4>
-                <p class="price"> <span class="price-new">66000 تومان</span> <span class="price-old">90000 تومان</span> <span class="saving">-27%</span> </p>
-                <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-              </div>
-            </div>
-            <div class="product-thumb clearfix">
-              <div class="image"><a href="product.html"><img src="image/product/macbook_air_1-50x75.jpg" alt="لپ تاپ ایلین ور" title="لپ تاپ ایلین ور" class="img-responsive" /></a></div>
-              <div class="caption">
-                <h4><a href="product.html">لپ تاپ ایلین ور</a></h4>
-                <p class="price"> <span class="price-new">10 میلیون تومان</span> <span class="price-old">12 میلیون تومان</span> <span class="saving">-5%</span> </p>
-              </div>
-            </div>
-          </div>
+            @include('client.layout.menubar')
         </aside>
         <!--Right Part End -->
       </div>

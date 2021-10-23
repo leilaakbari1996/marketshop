@@ -1,3 +1,7 @@
+@php
+    use App\Models\Cart;
+    use App\Models\Product;
+@endphp
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
@@ -18,7 +22,33 @@
 <link rel="stylesheet" type="text/css" href="/client/css/stylesheet-rtl.css" />
 <link rel="stylesheet" type="text/css" href="/client/css/responsive-rtl.css" />
 <link rel="stylesheet" type="text/css" href="/client/css/stylesheet-skin2.css" />
-
+<style>
+    .like{
+        color: red;
+    }
+</style>
+@yield('style')
+<style>
+    .btn-change{
+        width: 27px;
+        height: 27px;
+        border-radius: 5px;
+        margin: 5px;
+    }
+    .btn-input{
+        height: 25px;
+        width:25px;
+        padding-right:8px;
+        border: 0;
+    }
+    .btn-edit{
+        border: 0;
+        background: #fff;
+    }
+    .clear{
+        clear: both;
+    }
+</style>
 <!-- CSS Part End-->
 </head>
 <body>
@@ -89,12 +119,30 @@
               </ul>
             </div>
           </div>
-          <div id="top-links" class="nav pull-right flip">
-            <ul>
-              <li><a href="login.html">ورود</a></li>
-              <li><a href="register.html">ثبت نام</a></li>
-            </ul>
-          </div>
+          @auth
+            <div id="top-links" class="nav pull-right flip">
+                <ul>
+                    @php
+                        $user = auth()->user();
+                    @endphp
+                    <li class="btn btn-sm btn-warning" style="margin-top:15px">
+                        <a href="{{route('client.user.show',$user)}}"
+                        style="text-decoration: none;color:#fff;font-size:15px">{{$user->name}}</a>
+                    </li>
+                    <li class="btn btn-sm btn-danger" style="margin-top:15px">
+                        <a href="{{route('client.user.logout')}}"
+                        style="text-decoration: none;color:#fff;font-size:15px">خروج</a>
+                    </li>
+                </ul>
+            </div>
+          @else
+            <div id="top-links" class="nav pull-right flip">
+                <ul>
+                <li class="btn btn-sm btn-warning" style="margin-top:15px"><a href="{{route('client.register.create')}}"
+                    style="text-decoration: none;color:#fff;font-size:15px">ورود/ثبت نام</a></li>
+                </ul>
+            </div>
+          @endauth
         </div>
       </div>
     </nav>
@@ -112,55 +160,88 @@
           <div class="col-table-cell col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div id="cart">
               <button type="button" data-toggle="dropdown" data-loading-text="بارگذاری ..." class="heading dropdown-toggle">
-              <span class="cart-icon pull-left flip"></span>
-              <span id="cart-total">2 آیتم - 132000 تومان</span></button>
-              <ul class="dropdown-menu">
-                <li>
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="کفش راحتی مردانه" alt="کفش راحتی مردانه" src="image/product/sony_vaio_1-50x75.jpg"></a></td>
-                        <td class="text-left"><a href="product.html">کفش راحتی مردانه</a></td>
-                        <td class="text-right">x 1</td>
-                        <td class="text-right">32000 تومان</td>
-                        <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button></td>
-                      </tr>
-                      <tr>
-                        <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="تبلت ایسر" alt="تبلت ایسر" src="image/product/samsung_tab_1-50x75.jpg"></a></td>
-                        <td class="text-left"><a href="product.html">تبلت ایسر</a></td>
-                        <td class="text-right">x 1</td>
-                        <td class="text-right">98000 تومان</td>
-                        <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" onClick="" type="button"><i class="fa fa-times"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </li>
-                <li>
-                  <div>
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td class="text-right"><strong>جمع کل</strong></td>
-                          <td class="text-right">132000 تومان</td>
-                        </tr>
-                        <tr>
-                          <td class="text-right"><strong>کسر هدیه</strong></td>
-                          <td class="text-right">4000 تومان</td>
-                        </tr>
-                        <tr>
-                          <td class="text-right"><strong>مالیات</strong></td>
-                          <td class="text-right">11880 تومان</td>
-                        </tr>
-                        <tr>
-                          <td class="text-right"><strong>قابل پرداخت</strong></td>
-                          <td class="text-right">139880 تومان</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p class="checkout"><a href="cart.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده سبد</a>&nbsp;&nbsp;&nbsp;<a href="checkout.html" class="btn btn-primary"><i class="fa fa-share"></i> تسویه حساب</a></p>
-                  </div>
-                </li>
-              </ul>
+                    <span class="cart-icon pull-left flip"></span>
+                    <span id="cart-total">
+                        <span class="totalItem">{{Cart::totalItem()}}</span>
+                        آیتم -
+                        <span class="totalPriceWithDiscount">
+
+                            {{Cart::totalPriceWithDiscount()}}
+                        </span>
+                        تومان
+                    </span>
+                </button>
+                <ul class="dropdown-menu">
+                        <li>
+                            <table class="table">
+                                <tbody id="cart-table-body">
+                                    @if (Cart::is_session('cart'))
+                                        @foreach ($carts as $itemCart)
+                                                @php
+                                                    $product = $itemCart['product'];
+                                                @endphp
+                                                <tr class="cart-row-{{$product->id}}">
+                                                    <td class="text-center">
+                                                        <a href="{{route('client.product.show',$product)}}">
+                                                            <img class="img-thumbnail" title="{{$product->name}}" width="50"
+                                                            alt="{{$product->name}}" src="{{Product::get_image($product->image)}}">
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <a href="{{route('client.product.show',$product)}}">{{$product->name}}</a>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @include('client.product.quantity',[
+                                                            'product' => $product,
+                                                            'condition' => 1
+                                                        ])
+                                                    </td>
+                                                    <td class="text-right">{{$product->cost_with_discount}} تومان</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-danger btn-xs remove" title="حذف"
+                                                        onClick="removeFromCart({{$product->id}})"
+                                                        type="button"><i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <div>
+                                <table class="table table-bordered">
+                                <tbody>
+                                        <tr>
+                                            <td class="text-right"><strong>جمع کل</strong></td>
+                                            <td class="text-right"><span class="totalPrice">{{Cart::totalPrice()}}</span> تومان</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right"><strong>کسر هدیه</strong></td>
+                                            <td class="text-right"><span class="gift"> {{Cart::totalPrice() - Cart::totalPriceWithDiscount()}}</span> تومان</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right"><strong>قابل پرداخت</strong></td>
+                                            <td class="text-right"><span class="totalPriceWithDiscount">{{Cart::totalPriceWithDiscount()}}</span> تومان</td>
+                                        </tr>
+                                </tbody>
+                                </table>
+                                <p class="checkout">
+                                    <a href="{{route('client.cart.index')}}" class="btn btn-primary">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        مشاهده سبد
+                                    </a>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a href="checkout.html" class="btn btn-primary">
+                                        <i class="fa fa-share"></i>
+                                            تسویه حساب
+                                    </a>
+                                    &nbsp;&nbsp;&nbsp;
+                                </p>
+                            </div>
+                        </li>
+                </ul>
             </div>
           </div>
           <!-- Mini Cart End-->
