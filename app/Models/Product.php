@@ -45,7 +45,7 @@ class Product extends Model
         return $this->hasMany(Comment::class);
     }
     public function properties(){
-        return $this->belongsToMany(Property::class);
+        return $this->belongsToMany(Property::class,'product_properties');
     }
     public function propertyGroups(){
         return $this->category-> belongsToMany(PropertyGroup::class);
@@ -61,14 +61,17 @@ class Product extends Model
     }
     public static function offer(){
         $products = self::query()->where('offer','!=','0')->get();
-        foreach($products as $product){
-            $offer[$product->id] = $product->offer;
+        if($products->count() > 0){
+            foreach($products as $product){
+                $offer[$product->id] = $product->offer;
+            }
+            $collection = collect($offer);
+            $sorted = $collection->sortDesc();
+            $sortes = $sorted->toArray();
+            $ids =array_keys($sortes);
+            return $ids;
         }
-        $collection = collect($offer);
-        $sorted = $collection->sortDesc();
-        $sortes = $sorted->toArray();
-        $ids =array_keys($sortes);
-        return $ids;
+        return [];
     }
     public function getIsCartAttribute(){
         if(Cart::is_session('cart')){
@@ -78,4 +81,8 @@ class Product extends Model
 
 
     }
+    public function orderdeitals(){
+        return $this->hasMany(Orderdeital::class);
+    }
+
 }

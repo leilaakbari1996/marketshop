@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Models\PropertyGroup;
 use App\Models\Specialcategory;
 use App\Observers\CategoryObserve;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Middleware\CheckPermission;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':create-category')->only('create','store');
+        $this->middleware(CheckPermission::class.':update-category')->only(['edit','update']);
+        $this->middleware(CheckPermission::class.':delete-category')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -51,7 +58,7 @@ class CategoryController extends Controller
     {
         $category = Category::query()->create([
             'category_id' => $request->get('category_id'),
-            'name' => $request->get('name')
+            'name' => $request->get('name'),
         ]);
         $category->propertyGroups()->attach($request->get('propertyGroups'));
         return redirect(route('admin.category.index'));
@@ -93,13 +100,16 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update([
-            'name' => $request->get('name'),
-            'category_id' => $request->get('category_id')
-        ]);
-        $category->propertyGroups()->sync($request->get('propertyGroups'));
-        session()->flash('success',' دسته بندی '.$category->name .'  با موفقیت ویرایش شد ');
-        return redirect(route('admin.category.index'));
+        if($request->get('category_id') != $category->id){
+            $category->update([
+                'name' => $request->get('name'),
+                'category_id' => $request->get('category_id'),
+            ]);
+            $category->propertyGroups()->sync($request->get('propertyGroups'));
+            return redirect(route('admin.category.index'));
+        }
+        return redirect(route('admin.category.index'))->
+        withErrors(['category_id'=>'یک دسته بندی تمیتواند والد خودش باشد']);
     }
 
     /**
@@ -115,9 +125,19 @@ class CategoryController extends Controller
                 'category_id' => 'این دسته بندی نمیتواند حذف شود چون والد دسته بندی های دیگر می باشد.'
             ]);
         }
-        Storage::delete($category->image);
+        else if($category->products->count() != 0){
+            return redirect(route('admin.category.index'))->withErrors([
+                'id' => 'این دسته بندی نمی تواند حذف شود چون دسته بندی یک سری محصولات است.',
+            ]);
+        }
+        $category->propertyGroups()->detach();
         $category->delete();
         return redirect(route('admin.category.index'));
 
+    }
+    public function isCheckDate(Category $category){
+        return response([
+            'is_date' => $category->is_date
+        ],200);
     }
 }

@@ -53,7 +53,8 @@
                                                     @if ($product->is_propesal)
                                                         <input type="button"  onClick="PropesalProduct({{$product->id}})"
                                                         value="حذف از محصولات پیشنهادی"
-                                                         id="propesal-product-{{$product->id}}" class="btn btn-sm btn-danger">
+                                                         id="propesal-product-{{$product->id}}" class="btn btn-sm btn-danger"
+                                                         onclick="return confirm('آیا مطمن هستید می خواهید این محصول را از محصولات پیشنهادی حذف کنید؟')">
                                                     @else
                                                         <input type="button" id="propesal-product-{{$product->id}}"
                                                         class="btn btn-sm btn-success"

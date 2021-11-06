@@ -36,15 +36,17 @@
           </li>
         @endforeach
         <li class="menu_brands dropdown"><a href="#">برند ها</a>
-            <div class="dropdown-menu">
-                @foreach ($brands as $brand)
-                     <div class="col-lg-1 col-md-2 col-sm-3 col-xs-6">
-                         <a href="#"><img src="{{Product::get_image($brand->image)}}" title="{{$brand->name}}"
-                             alt="{{$brand->name}}" /></a><a href="#">{{$brand->name}}
-                         </a>
-                    </div>
-                @endforeach
-            </div>
+            @if (count($brands) > 0)
+                <div class="dropdown-menu">
+                    @foreach ($brands as $brand)
+                        <div class="col-lg-1 col-md-2 col-sm-3 col-xs-6">
+                            <a href="#"><img src="{{Product::get_image($brand->image)}}" title="{{$brand->name}}"
+                                alt="{{$brand->name}}" width="70px" /></a><a href="#">{{$brand->name}}
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
           </li>
           <li class="dropdown wrap_custom_block hidden-sm hidden-xs"><a>بلاک سفارشی</a>
             <div class="dropdown-menu custom_block">

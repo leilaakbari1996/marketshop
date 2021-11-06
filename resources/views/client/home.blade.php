@@ -33,7 +33,6 @@
                     <div class="owl-carousel product_carousel_tab">
                         @if (count($specialProducts) > 0)
                             @foreach ($specialProducts as $product)
-
                                 <div class="clearfix">
                                     @include('client.product.product',[
                                         'product' => $product
@@ -50,7 +49,7 @@
                 </div>
                 <div id="tab-latest" class="tab_content">
                     <div class="owl-carousel product_carousel_tab">
-                        @if ($newProducts->count() > 0)
+                        @if (count($newProducts) > 0)
                             @foreach ($newProducts as $newProduct)
                                 @include('client.product.product',[
                                     'product' => $newProduct
@@ -66,6 +65,7 @@
                 </div>
                 <div id="tab-bestseller" class="tab_content">
                     <div class="owl-carousel product_carousel_tab">
+
                         @if (count($bestsellers) > 0)
                             @foreach ($bestsellers as $id)
                                 @php
@@ -133,20 +133,23 @@
 
           @endif
           <!-- دسته ها محصولات Slider End-->
-
-          <!-- دسته ها محصولات Slider Start -->
-          <h3 class="subtitle">بیشترین تخفیفات - <a class="viewall" href="{{route('client.offer.index')}}">نمایش همه</a></h3>
-          <div class="owl-carousel latest_category_carousel">
-               @foreach ($productOffers as $offer)
-                  @php
-                      $product = Product::query()->where('id',$offer)->first();
-                  @endphp
-                   @include('client.product.product',[
-                       'product' => $product
-                   ])
+          @if (count($productOffers) > 0)
+               <!-- دسته ها محصولات Slider Start -->
+                <h3 class="subtitle">بیشترین تخفیفات - <a class="viewall" href="{{route('client.offer.index')}}">نمایش همه</a></h3>
+                <div class="owl-carousel latest_category_carousel">
+                    @foreach ($productOffers as $offer)
+                        @php
+                            $product = Product::query()->where('id',$offer)->first();
+                        @endphp
+                        <div class="clearfix">
+                                @include('client.product.product',[
+                                    'product' => $product
+                                ])
+                </div>
               @endforeach
           </div>
           <!-- دسته ها محصولات Slider End -->
+          @endif
 
           <!-- برند Logo Carousel Start-->
           <div id="carousel" class="owl-carousel nxt">
@@ -154,7 +157,7 @@
                     <div class="item text-center">
                         <a href="#">
                             <img src="{{str_replace('public','/storage',$brand->image)}}"
-                            alt="{{$brand->name}}" class="img-responsive" />
+                            alt="{{$brand->name}}" class="img-responsive" width="150px"/>
                         </a>
                     </div>
                 @endforeach

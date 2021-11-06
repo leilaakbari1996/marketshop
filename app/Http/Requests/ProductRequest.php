@@ -28,9 +28,9 @@ class ProductRequest extends FormRequest
             'brand_id' => ['required','exists:brands,id'],
             'name' => ['required'],
             'slug' => ['required','unique:products,slug'],
-            'number' => ['required','integer'],
+            'number' => ['required','digits_between:1,999'],
             'image' => ['required','mimes:png,jpg'],
-            'price' => ['required','integer'],
+            'price' => ['required','regex:/^(\d+(\.\d*)?)|(\.\d+)$/'],
             'desc' => ['required']
         ];
     }

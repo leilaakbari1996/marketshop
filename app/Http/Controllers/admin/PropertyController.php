@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PropertRequest;
 use App\Models\Product;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PropertRequest;
+use App\Http\Middleware\CheckPermission;
 
 class PropertyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':create-property')->only('create','store');
+        $this->middleware(CheckPermission::class.':update-property')->only(['edit','update']);
+        $this->middleware(CheckPermission::class.':delete-property')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -91,7 +98,12 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        //
+        if($property->products()->count() != 0){
+            return redirect(route('admin.property.index'))->withErrors($property->name.' نمی تواند حذف شود چون متعلق به یک سری محصولات است');
+        }
+        $property->propertyGroups()->detach();
+        $property->delete();
+        return redirect(route('admin.property.index'));
     }
 
 }

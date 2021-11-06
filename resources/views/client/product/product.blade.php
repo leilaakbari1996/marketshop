@@ -11,7 +11,7 @@
         <p class="price">
             <span class="price-new">{{$product->cost_with_discount}} تومان   </span>&nbsp;&nbsp;&nbsp;
             @if ($product->offer > 0)
-                <span class="price-old" style="font-size: 19px">{{$product->price}} تومان</span>
+                <span class="price-old" >{{$product->price}} تومان</span>
                 <span class="saving">-{{$product->offer}}%</span>
             @endif
         </p>
@@ -20,24 +20,21 @@
         @auth
             <button class="btn btn-lg btn-primary" type="button"
             @if ($product->is_cart)
-                onClick="addToCart({{$product->id }},1)"
+               onClick="addToCart({{$product->id }},1)"
             @else
                 onClick="addToCart({{$product->id }},0)"
             @endif
             >
-                <span id="basket-{{$product->id}}">
+                <span id="basket-{{$product->id}}" class="basket-{{$product->id}}">
                     @if ($product->is_cart)
-                    بروز رسانی سبد خرید
+                    بروز رسانی سبد
                     @else
-                        افزودن به سبد خرید
+                        افزودن به سبد
                     @endif
                 </span>
             </button>
         @else
-            <a href="{{route('client.register.create')}}">
-                <button class="btn-primary" type="button"
-                ><span>افزودن به سبد</span></button>
-            </a>
+            <a href="{{route('client.register.create')}}" class="btn btn-lg btn-primary">افزودن به سبد</a>
         @endauth
         <div class="add-to-links">
             @auth

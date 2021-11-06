@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="row">
                                     @foreach ($permissions as $permission)
-                                        <div class="col-lg-3">
+                                        <div class="col-lg-4">
                                             <input type="checkbox" name="permissions[]" id="permissions"
                                             value="{{$permission->id}}">&nbsp; {{$permission->lable}}
                                         </div>

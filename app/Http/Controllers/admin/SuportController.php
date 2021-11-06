@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Suport;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 
 class SuportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':suported');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -91,6 +96,9 @@ class SuportController extends Controller
      */
     public function destroy(Suport $suport)
     {
-        //
+        $suport->update([
+            'status' => 2
+        ]);
+       return redirect(route('admin.suport.index'));
     }
 }

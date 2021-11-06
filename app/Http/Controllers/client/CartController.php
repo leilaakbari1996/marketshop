@@ -21,10 +21,12 @@ class CartController extends Controller
     public function index()
     {
 
-        return view('client.cart.index',[
-            'title' => 'سبد خرید من',
-            'carts' => Cart::arrayCart()
-        ]);
+
+            return view('client.cart.index',[
+                'title' => 'سبد خرید من',
+                'carts' => Cart::arrayCart()
+            ]);
+
     }
 
     /**
@@ -118,6 +120,7 @@ class CartController extends Controller
         return response([
             'msg' => 'deleted',
             'cart' => Cart::arrayCart(),
+            'count' => count(Cart::arrayCart()),
             'totalPrice' => Cart::totalPrice(),
             'totalPriceWithDiscount' => Cart::totalPriceWithDiscount(),
             'totalItem' => Cart::totalItem(),

@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class SuportController extends Controller
 {
+    public function __construct()
+    {//only users logined
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,11 @@ class SuportController extends Controller
      */
     public function index()
     {
-        //
+        $id = auth()->id();
+        return view('client.support.index',[
+            'title' => 'وضعیت ارتباط ادمین با شما',
+            'supports' => Suport::query()->where('user_id',$id)->get()
+        ]);
     }
 
     /**

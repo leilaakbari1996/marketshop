@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
+    public function __construct()
+    {//only users logined
+        $this->middleware('auth');
+    }
     public function index(){
         $user = auth()->user();
         return view('client.like.index',[

@@ -14,7 +14,7 @@ class SuportObserve
      */
     public function created(suport $suport)
     {
-        session()->flash('success','  ');
+        session()->flash('success',' پیام شما با موفقیت به سمت ادمین فرستاده شد. ');
     }
 
     /**
@@ -36,7 +36,7 @@ class SuportObserve
      */
     public function deleted(suport $suport)
     {
-        //
+        session()->flash('success',' پیام کاربر با موفقیت حذف شد. ');
     }
 
     /**

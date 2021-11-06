@@ -105,11 +105,11 @@ use App\Models\Product;
 <script>
     function addToCart(ProductId,condition){
         var span = document.getElementById("basket-"+ProductId).innerText;
-        if(span == 'افزودن به سبد خرید'){
+        if(span == 'افزودن به سبد'){
             condition = 0;
         }
         if(condition == 1){
-            editCart(ProductId);
+            window.location = '/cart';
         }else{
             var quantity = $('.input-quantity-'+ProductId).val();
             if(quantity == null){
@@ -128,7 +128,8 @@ use App\Models\Product;
                     $('.totalPrice').text(data.totalPrice);
                     $('.totalPriceWithDiscount').text(data.totalPriceWithDiscount);
                     $('.gift').text(data.totalPrice - data.totalPriceWithDiscount);
-                    $('#basket-'+product.id).text('به روز رسانی سبد خرید');
+                    $('#basket-'+product.id).text('به روز رسانی سبد');
+                    $('.basket-'+product.id).text('به روز رسانی سبد');
                     if(!$('#cart-row-'+product.id).length){
                         var quantity = data.cart[product.id].quantity;
                         $('#cart-table-body').append(
@@ -154,23 +155,31 @@ use App\Models\Product;
         }
     }
     function removeFromCart(productId){
-        $.ajax({
-            type : 'delete',
-            url : '/cart/'+productId,
-            data : {
-                _token : '{{csrf_token()}}'
-            },success : function(data){
-                alert(' محصول '+data.productName+' از سبد خرید حذف شد.');
-                $('.totalItem').text(data.totalItem);
-                $('.input-quantity-'+productId).val(1);
-                $('.totalPrice').text(data.totalPrice);
-                $('#cart-row-'+productId).remove();
-                $('#basket-'+productId).text('افزودن به سبد خرید');
-                $('.totalPriceWithDiscount').text(data.totalPriceWithDiscount);
-                $('.gift').text(data.totalPrice - data.totalPriceWithDiscount);
+        if (confirm('آیا مطمن هستید می خواهید این محصول را از سبد خرید حذف کنید؟')) {
+            $.ajax({
+                type : 'delete',
+                url : '/cart/'+productId,
+                data : {
+                    _token : '{{csrf_token()}}'
+                },success : function(data){
+                    if(data.count == 0){
+                        $('.empty').remove();
+                        $('.basket-empty').append('<div style="text-align: center"><img src="/storage/basket.png" alt="سبد خرید"><h4 class="text-danger">سبد خرید شما خالی است!</h4><a class="btn btn-primary" href="/">خرید از فروشگاه</a></div>');
+                    }
+                        alert(' محصول '+data.productName+' از سبد خرید حذف شد.');
+                        $('.totalItem').text(data.totalItem);
+                        $('.input-quantity-'+productId).val(1);
+                        $('.totalPrice').text(data.totalPrice);
+                        $('#cart-row-'+productId).remove();
+                        $('.cart-row-'+productId).remove();
+                        $('#basket-'+productId).text('افزودن به سبد');
+                        $('.totalPriceWithDiscount').text(data.totalPriceWithDiscount);
+                        $('.gift').text(data.totalPrice - data.totalPriceWithDiscount);
 
-            }
-        })
+
+                }
+            })
+        }
     }
     function plus(productId,number,condition){
         var quantity = $('.input-quantity-'+productId).val();
@@ -257,7 +266,21 @@ use App\Models\Product;
             }
         });
     }
-
+    function Coupon(){
+        var coupon = $('#input-coupon').val();
+        $.ajax({
+            type:'post',
+            url:'/coupon',
+            data:{
+                _token : '{{csrf_token()}}',
+                coupon : coupon
+            },success:function(data){
+                alert(data.msg);
+                $('.totalPriceWithDiscount').text(data.totalPriceWithDiscount);
+                $('.gift').text(data.gift);
+            }
+        });
+    }
 </script>
 @yield('script')
 <!-- JS Part End-->

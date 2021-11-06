@@ -25,7 +25,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'address' => ['required'],
-            'postcode' => ['required','integer'],
+            'postcode' => ['required','digits:10'],
             'quantity' =>['required','min:1']
         ];
     }

@@ -24,7 +24,12 @@ class HomeController extends Controller
                 $newProducts[] = $products[$i];
             }
         }
-        $category_id = Specialcategory::query()->first()->category_id;
+        $specialCategory = Specialcategory::query();
+        if($specialCategory->exists()){
+            $category_id = $specialCategory->first()->category_id;
+        }else{
+            $category_id = null;
+        }
         return view('client.home',[
             'title' => 'مارکت شاپ',
             'specialCategoryProduct' => Category::getIdAllSubCategory($category_id),

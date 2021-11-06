@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\RoleRequest;
-use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
+use App\Http\Requests\RoleRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':read-role');
+        $this->middleware(CheckPermission::class.':create-role')->only('create');
+        $this->middleware(CheckPermission::class.':update-role')->only(['edit','update']);
+        $this->middleware(CheckPermission::class.':delete-role')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -101,6 +109,11 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if($role->title == 'user' || $role->title == 'admin'){
+            return redirect(route('admin.role.index'))->withErrors([
+                'title' => $role->title.' نمی تواند حذف شود.'
+            ]);
+        }
         $role->permissions()->detach();
         $role->delete();
         return redirect(route('admin.role.index'));

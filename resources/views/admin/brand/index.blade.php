@@ -31,7 +31,7 @@
                                     <td>{{$brand->name}}</td>
                                     <td>
                                         <img src="{{str_replace('public','/storage',$brand->image)}}"
-                                        alt="{{$brand->name}}">
+                                        alt="{{$brand->name}}" width="70px" style="margin-top: -10px;margin-bottom:-10px">
                                     </td>
                                     <td><a href="{{route('admin.brand.edit',$brand)}}"
                                         class="btn btn-sm btn-info">ویرایش</a></td>
@@ -40,7 +40,8 @@
                                             @csrf
                                             @method('delete')
                                             <div class="form-group">
-                                                <input type="submit" class="btn btn-sm btn-danger" value="حذف">
+                                                <input type="submit" class="btn btn-sm btn-danger" value="حذف"
+                                                onclick="return confirm('آیا مطمن هستید می خواهید این برند را حذف کنید؟')">
                                             </div>
                                         </form>
                                     </td>

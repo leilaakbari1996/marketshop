@@ -17,11 +17,15 @@
                                     <select class="form-control select2" style="width: 100%;" name="category_id">
                                         <option selected="selected" value="">لطفا دسته بندی والد را انتخاب کنید...</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{$category->id}}"
-                                                @if ($categoryMain->category_id == $category->id)
-                                                     selected
-                                                @endif
-                                                >{{$category->name}}</option>
+
+                                            @if ($category->id != $categoryMain->id)
+                                                <option value="{{$category->id}}"
+                                                    @if ($categoryMain->category_id == $category->id)
+                                                        selected
+                                                    @endif
+                                                    >{{$category->name}}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

@@ -49,7 +49,7 @@
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-sm btn-danger" style="float: left;margin-left:10px"
-                                >حذف </button>
+                                onclick="return confirm('آیا مطمن هستید می خواهید این نظر را حذف کنید؟')">حذف </button>
                                 <div class="clear"></div>
                             </form>
                         </div>

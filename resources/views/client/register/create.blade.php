@@ -15,6 +15,7 @@
           <h1 class="title">حساب کاربری ورود</h1>
           <div class="row">
             <div class="col-sm-12">
+                @include('admin.layout.errors')
                 <form action="{{route('client.register.sendemail')}}" method="POST">
                     @csrf
                     <div class="form-group">
