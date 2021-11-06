@@ -1,8 +1,16 @@
 @extends('admin.layout.master')
+@section('style')
+    <link rel="stylesheet" href="/admin/dist/css/jquery-ui.css">
+    <style>
+        #is_date{
+            box-shadow: 4px 5px 24px -1px rgba(0,0,0,0.98);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+@endsection
 @section('content')
-
-
-
             <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -34,31 +42,34 @@
                                                 @endforeach
                                             </select>
                                         @else
-                                        <div class="alert alert-info alert-dismissible">
-                                            <h5><i class="icon fa fa-info"></i> توجه!</h5>
-                                            هیچ برندی ثبت نشده است.لطفا ابتدا برند را ثبت کنید.
-                                            <a href="{{route('admin.brand.create')}}" class="btn btn-sm btn-dark"
-                                            style="text-decoration: none">ثبت برند</a>
-
-                                        </div>
+                                            <div class="alert alert-info alert-dismissible">
+                                                <h5><i class="icon fa fa-info"></i> توجه!</h5>
+                                                هیچ برندی ثبت نشده است.لطفا ابتدا برند را ثبت کنید.
+                                                @if ($check_brand)
+                                                    <a href="{{route('admin.brand.create')}}" class="btn btn-sm btn-dark"
+                                                    style="text-decoration: none">ثبت برند</a>
+                                                @endif
+                                            </div>
                                         @endif
                                     </div>
                                     <div class="form-group">
                                         <label for="category_id">دسته بندی :</label>
                                         @if (count($categories) > 0)
-                                            <select class="form-control select2" style="width: 100%;" name="category_id">
+                                            <select class="form-control select2" style="width: 100%;" name="category_id"
+                                            onchange="checkIsDate()" id="category_val">
                                                 <option selected="selected" value="">دسته بندی محصول را وارد کنید...</option>
                                                 @foreach ($categories as $category)
-                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    <option value="{{$category->id}}" class="category_id_val">{{$category->name}}</option>
                                                 @endforeach
                                             </select>
                                         @else
                                         <div class="alert alert-info alert-dismissible">
                                             <h5><i class="icon fa fa-info"></i> توجه!</h5>
                                             هیچ دسته بندی ثبت نشده است.لطفا ابتدا دسته بندی را ثبت کنید.
-                                            <a href="{{route('admin.category.create')}}" class="btn btn-sm btn-dark"
-                                            style="text-decoration: none">ثبت دسته بندی</a>
-
+                                            @if ($check_category)
+                                                <a href="{{route('admin.category.create')}}" class="btn btn-sm btn-dark"
+                                                style="text-decoration: none">ثبت دسته بندی</a>
+                                            @endif
                                         </div>
                                         @endif
                                     </div>
@@ -68,7 +79,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="number">تعداد</label>
-                                        <input type="number" name="number" id="number" class="form-control select2">
+                                        <input type="text" name="number" id="number" class="form-control select2">
                                     </div>
                                     <div class="form-group">
                                         <label for="price">قیمت</label>
@@ -96,5 +107,41 @@
         </section>
         <!-- /.content -->
 
+@endsection
+@section('script')
+    <script src="/admin/dist/js/jquery-1.12.4.js"></script>
+    <script src="/admin/dist/js/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $('.date').datepicker();  
+            $('.date').datepicker({
+                    format: 'dd/mm/yy'
+            });      
+        });
+        function checkIsDate(){
+            var categoryId = document.getElementById("category_val").value;// id category selected.
+            $.ajax({
+                type:'get',
+                url :'/adminpanel/category/isCheckDate/'+categoryId,
+                data:{
+                    _token : '{{csrf_token()}}',
+                },success:function(data){
+                    if(data.is_date == 1){
+                        $('#is_date').text('سلام');
+                    }else{
+                        $('#is_date').text('ki');
+                    }
+
+                }
+            });
+
+        }
+        function checkNumber(){
+
+        }
+        function recording(){
+
+        }
+    </script>
 @endsection
 

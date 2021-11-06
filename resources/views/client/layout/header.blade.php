@@ -127,7 +127,13 @@
                     @endphp
                     <li class="btn btn-sm btn-warning" style="margin-top:15px">
                         <a href="{{route('client.user.show',$user)}}"
-                        style="text-decoration: none;color:#fff;font-size:15px">{{$user->name}}</a>
+                        style="text-decoration: none;color:#fff;font-size:15px">
+                            @if ($user->name == null)
+                                پروفایل شما
+                            @else
+                                {{$user->name}}
+                            @endif
+                        </a>
                     </li>
                     <li class="btn btn-sm btn-danger" style="margin-top:15px">
                         <a href="{{route('client.user.logout')}}"
@@ -172,6 +178,7 @@
                     </span>
                 </button>
                 <ul class="dropdown-menu">
+                        <li style="text-align: center"><h3 style="margin-top: 0">سبد خرید</h3></li>
                         <li>
                             <table class="table">
                                 <tbody id="cart-table-body">
@@ -197,19 +204,14 @@
                                                         ])
                                                     </td>
                                                     <td class="text-right">{{$product->cost_with_discount}} تومان</td>
-                                                    <td class="text-center">
-                                                        <button class="btn btn-danger btn-xs remove" title="حذف"
-                                                        onClick="removeFromCart({{$product->id}})"
-                                                        type="button"><i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
+                                                    <td class="text-center"><button class="btn btn-danger btn-xs remove" title="حذف" onClick="removeFromCart({{$product->id}})" type="button"><i class="fa fa-times"></i></button></td>
                                                 </tr>
                                         @endforeach
                                     @endif
                                 </tbody>
                             </table>
                         </li>
-                        <li>
+                        <li >
                             <div>
                                 <table class="table table-bordered">
                                 <tbody>
@@ -228,15 +230,13 @@
                                 </tbody>
                                 </table>
                                 <p class="checkout">
+
                                     <a href="{{route('client.cart.index')}}" class="btn btn-primary">
                                         <i class="fa fa-shopping-cart"></i>
                                         مشاهده سبد
                                     </a>
-                                    &nbsp;&nbsp;&nbsp;
-                                    <a href="checkout.html" class="btn btn-primary">
-                                        <i class="fa fa-share"></i>
-                                            تسویه حساب
-                                    </a>
+
+
                                     &nbsp;&nbsp;&nbsp;
                                 </p>
                             </div>

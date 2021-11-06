@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class SpecialProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':select-products-special');
+    }
     public function index(){
         return view('admin.product.special',[
             'title' => 'محصولات ویژه',

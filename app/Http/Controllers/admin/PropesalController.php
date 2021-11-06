@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class PropesalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':select-products-propesal');
+    }
     /**
      * Display a listing of the resource.
      *

@@ -6,7 +6,9 @@ use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Coupon;
 use App\Models\Orderdeital;
+use App\Models\Picture;
 use App\Models\Product;
 use App\Models\Property;
 use App\Models\PropertyGroup;
@@ -18,6 +20,8 @@ use App\Models\User;
 use App\Observers\BrandObserve;
 use App\Observers\CategoryObserve;
 use App\Observers\CommentObserve;
+use App\Observers\CouponObserve;
+use App\Observers\PictureObserve;
 use App\Observers\ProductObserve;
 use App\Observers\PropertyGroupObserve;
 use App\Observers\PropertyObserve;
@@ -59,6 +63,8 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserve::class);
         PropertyGroup::observe(PropertyGroupObserve::class);
         Property::observe(PropertyObserve::class);
+        Coupon::observe(CouponObserve::class);
+        Picture::observe(PictureObserve::class);
 
 
 

@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="number">تعداد</label>
-                                        <input type="number" name="number" id="number" value="{{$product->number}}"
+                                        <input type="text" name="number" id="number" value="{{$product->number}}"
                                         class="form-control select2">
                                     </div>
                                     <div class="form-group">

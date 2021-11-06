@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Models\Brand;
@@ -11,6 +12,12 @@ use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':create-brand')->only('create','store');
+        $this->middleware(CheckPermission::class.':update-brand')->only(['edit','update']);
+        $this->middleware(CheckPermission::class.':delete-brand')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -112,6 +119,11 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        if($brand->products()->count() != 0){
+            return redirect(route('admin.brand.index'))->withErrors([
+                'id' => 'این برند نمیتواند حذف شود چون برند یک سری از محصولات می باشد'
+            ]);
+        }
         Storage::delete($brand->image);
         $brand->delete();
         return redirect(route('admin.brand.index'));

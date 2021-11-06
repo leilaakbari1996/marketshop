@@ -24,25 +24,28 @@ class Orderdeital extends Model
     }
     public static function Bestsellers(){
         $orders = self::all();//products forokhte shode.
+        if($orders->count() != 0){
 
-        foreach($orders as $order){
-            $deitals[$order->product_id] = 0;
-        }
-        foreach($orders as $order){
-            $deitals[$order->product_id] += $order->quantity;
-        }
-        $collection = collect($deitals);
-        $sorted = $collection->sortDesc();
-        $sortes = $sorted->toArray();
-        $ids =array_keys($sortes);
-        if(count($ids) < 6){
-            return $ids;
-        }else{
-            for($i = 0; $i < 5 ; $i++){
-                $productIds[] = $ids[$i];
+            foreach($orders as $order){
+                $deitals[$order->product_id] = 0;
             }
-            return $productIds;
+            foreach($orders as $order){
+                $deitals[$order->product_id] += $order->quantity;
+            }
+            $collection = collect($deitals);
+            $sorted = $collection->sortDesc();
+            $sortes = $sorted->toArray();
+            $ids =array_keys($sortes);
+            if(count($ids) < 6){
+                return $ids;
+            }else{
+                for($i = 0; $i < 5 ; $i++){
+                    $productIds[] = $ids[$i];
+                }
+                return $productIds;
+            }
         }
+        return [];
 
     }
 }

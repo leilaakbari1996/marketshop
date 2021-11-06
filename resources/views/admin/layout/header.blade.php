@@ -68,7 +68,7 @@
   </nav>
   <!-- /.navbar -->
 
-  @include('admin.layout.menu')
+   @include('admin.layout.menu')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

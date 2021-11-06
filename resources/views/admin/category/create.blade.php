@@ -32,17 +32,19 @@
                                     <input type="text" name="name" id="name" class="form-control select2"
                                     style="width: 100%;">
                                 </div>
-                                <div class="form-group">
-                                    <label for="">انتخاب گروه ویژگی ها</label><br>
-                                    <div class="row">
-                                        @foreach ($propertyGroups as $propertyGroup)
-                                            <div class="col-sm-3">
-                                                <input type="checkbox" name="propertyGroups[]" id="propertyGroups"
-                                                value="{{$propertyGroup->id}}" class="inp">{{$propertyGroup->name}}
-                                            </div>
-                                        @endforeach
+                                @if (count($propertyGroups) > 0)
+                                    <div class="form-group">
+                                        <label for="">انتخاب گروه ویژگی ها</label><br>
+                                        <div class="row">
+                                            @foreach ($propertyGroups as $propertyGroup)
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" name="propertyGroups[]" id="propertyGroups"
+                                                    value="{{$propertyGroup->id}}" class="inp">{{$propertyGroup->name}}
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                                 <div class="form-group" style="text-align: left">
                                     <input type="submit" class="btn btn-success btn-sm"
                                     value="ثبت دسته بندی" >

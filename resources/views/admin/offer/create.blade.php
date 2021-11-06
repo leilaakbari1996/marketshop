@@ -13,9 +13,9 @@
                                     @csrf
                                     @method('patch')
                                     <div class="form-group">
-                                        <label for="offer">مقدار تخفیف</label>
+                                        <label for="offer">مقدار تخفیف را به درصد وارد کنید.</label>
                                         <input type="number" name="offer" id="offer" class="form-control select2"
-                                        style="width: 100%;">
+                                        style="width: 20%;">
                                     </div>
                                     <div class="form-group" style="text-align: left">
                                         <input type="submit" class="btn btn-success btn-sm"

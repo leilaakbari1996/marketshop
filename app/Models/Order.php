@@ -11,14 +11,14 @@ class Order extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public  static function store_to_db($address,$postcode){
+    public  static function store_to_db($address,$postcode,$totalPriceWithDiscount){
         $order = self::query()->create([
             'user_id' => auth()->id(),
-            'price' => Cart::totalPrice(),
+            'price' => $totalPriceWithDiscount,
             'postcode' => $postcode,
             'address' => $address
         ]);
-        foreach(Cart::arrayCart() as $cart){
+        foreach(Cart::get_session('cart') as $cart){
             Orderdeital::query()->create([
                 'product_id' => $cart['product']->id,
                 'quantity' => $cart['quantity'],

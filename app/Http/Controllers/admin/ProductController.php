@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\Date;
+use App\Models\Brand;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Middleware\CheckPermission;
+use App\Http\Requests\DateProductReauest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':create-product')->only('create','store');
+        $this->middleware(CheckPermission::class.':update-product')->only(['edit','update']);
+        $this->middleware(CheckPermission::class.':delete-product')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +45,9 @@ class ProductController extends Controller
         return view('admin.product.create',[
             'title' => 'ایجاد محصول',
             'brands' => Brand::all(),
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'check_category' => auth()->user()->role->hasPermission('create_category'),
+            'check_brand' => auth()->user()->role->hasPermission('create_brand'),
         ]) ;
     }
 
@@ -49,7 +60,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $path = $request->file('image')->storeAs('public/product',$request->file('image')->getClientOriginalName());
-        Product::query()->create([
+        $product = Product::query()->create([
             'name' => $request->get('name'),
             'slug' => $request->get('slug'),
             'category_id' => $request->get('category_id'),
@@ -59,6 +70,9 @@ class ProductController extends Controller
             'image' => $path,
             'desc' => $request->get('desc')
         ]);
+        if($product->category->is_date == 1){
+           return redirect(route('admin.product.date',$product));
+        }
         return redirect(route('admin.product.index'));
     }
 
@@ -131,9 +145,18 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if($product->orderdeitals()->count() > 0){
+            return redirect(route('admin.product.index'))->withErrors('این محصول نمیتواند حذف شود.');
+        }
         Storage::delete($product->image);
         $product->delete();
         return redirect(route('admin.product.index'));
+    }
+    public function date(Product $product){
+        return view('admin.product.date',[
+            'title' => ' ثبت تاریخ محصول '.$product->name,
+            'product' => $product
+        ]);
     }
 }
 

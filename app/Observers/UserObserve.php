@@ -36,7 +36,7 @@ class UserObserve
      */
     public function deleted(User $user)
     {
-        //
+        //session()->flash('success',$user->email.' با موفقیت حذف شد.');
     }
 
     /**

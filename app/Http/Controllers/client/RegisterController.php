@@ -21,7 +21,8 @@ class RegisterController extends Controller
             auth()->login($user);
             return redirect(route('client.index'));
         }
-        return back()->withErrors(['otp' => 'کد وارد شده صحیح نیست.']);
+        $user->delete();
+        return redirect(route('client.register.create'))->withErrors(['otp' => 'کد وارد شده صحیح نیست.']);
     }
     public function sendemail(RegisterRequest $request){
         $user = User::genrateOtp($request->get('email'));
@@ -33,4 +34,5 @@ class RegisterController extends Controller
             'title' => 'ورود'
         ]);
     }
+
 }

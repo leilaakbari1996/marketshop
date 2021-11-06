@@ -22,9 +22,9 @@ class CreateProductsTable extends Migration
             $table->string('slug')->unique();
             $table->string('image');
             $table->text('desc');
-            $table->integer('number');
+            $table->string('number');
             $table->unsignedBigInteger('offer')->default(0);
-            $table->integer('price');
+            $table->text('price');
             $table->timestamps();
         });
     }

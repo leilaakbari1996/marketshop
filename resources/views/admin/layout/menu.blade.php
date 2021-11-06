@@ -1,3 +1,4 @@
+
  <!-- Main Sidebar Container -->
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -39,23 +40,32 @@
                     <a href="#" class="nav-link">
                       <i class="nav-icon fa fa-table"></i>
                       <p>
+                        کاربران
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.user.index')}}" class="nav-link">
+                            <i class="fa fa-circle-o nav-icon"></i>
+                            <p>لیست</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-table"></i>
+                      <p>
                         اسلایدر
                         <i class="fa fa-angle-left right"></i>
                       </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if (count($sliders) < 3)
-                            <li class="nav-item">
-                                <a href="{{route('admin.slider.create')}}" class="nav-link">
-                                <i class="fa fa-circle-o nav-icon"></i>
-                                <p>ایجاد</p>
-                                </a>
-                            </li>
-                        @endif
                         <li class="nav-item">
                             <a href="{{route('admin.slider.index')}}" class="nav-link">
                             <i class="fa fa-circle-o nav-icon"></i>
-                            <p>لیست</p>
+                            <p>اسلایدر</p>
                             </a>
                         </li>
                     </ul>
@@ -233,13 +243,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
-                        <a href="{{route('admin.property.create')}}" class="nav-link">
+                        <a href="{{route('admin.coupon.create')}}" class="nav-link">
                           <i class="fa fa-circle-o nav-icon"></i>
                           <p>ایجاد</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{route('admin.property.index')}}" class="nav-link">
+                        <a href="{{route('admin.coupon.index')}}" class="nav-link">
                           <i class="fa fa-circle-o nav-icon"></i>
                           <p>لیست</p>
                         </a>
@@ -583,3 +593,4 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+

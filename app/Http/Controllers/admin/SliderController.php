@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Middleware\CheckPermission;
 
 class SliderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':update-slider')->only('edit','update');
+        $this->middleware(CheckPermission::class.':delete-slider')->only('delete');
+        $this->middleware(CheckPermission::class.':create-slider')->only('create');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +25,8 @@ class SliderController extends Controller
     {
         return view('admin.slider.index',[
             'title' => 'اسلایدر',
-            'sliders' => Slider::all()
+            'sliders' => Slider::all(),
+            'check_permission' => auth()-> user()->role->haspermission('create-slider')
         ]);
     }
 
@@ -29,10 +37,6 @@ class SliderController extends Controller
      */
     public function create()
     {
-        return view('admin.slider.create',[
-            'title' => 'اسلایدر',
-            'sliders' => Slider::all()
-        ]);
     }
 
     /**

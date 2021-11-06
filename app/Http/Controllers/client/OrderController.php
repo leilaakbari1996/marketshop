@@ -12,6 +12,10 @@ use Shetabit\Payment\Facade\Payment;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {//only users logined
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +25,7 @@ class OrderController extends Controller
     {
         $user_id = auth()->id();
         return view('client.order.index',[
-            'title' => 'مشخصات سفارشات شما',
+            'title' => 'لیست خرید های من',
             'orders' => Order::query()->where('user_id',$user_id)->get()
         ]);
     }
@@ -42,10 +46,29 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderRequest $request)
+    public function record(OrderRequest $request){
+        $address = $request->get('address');
+        $codPost = $request->get('postcode');
+        $str = (string)$codPost;
+        for($i = 0; $i < 5;$i++){
+           $char = $str[$i];
+            if($char == '0' || $char == '2'){
+                return redirect()->back()->withErrors([
+                    'postcode' => 'کد پستی وارد شده نا معتبر است'
+                ]);
+            }
+
+        }
+        return view('client.order.store',[
+            'title' => 'ثبت سفارش',
+            'address' => $address,
+            'codepost' => $codPost
+        ]);
+    }
+    public function store(Request $request)
     {
-        $order = Order::store_to_db($request->get('address'),$request->get('postcode'));
-        $invoice = (new Invoice)->amount($order->price);
+        $order = Order::store_to_db($request->get('address'),$request->get('codepost'),$request->get('totalPriceWithDiscount'));
+        $invoice = (new Invoice)->amount((int)$order->price);
         return Payment::purchase($invoice,function($driver, $transactionId) use ($order) {
             $order->update([
                 'transaction_id' => $transactionId

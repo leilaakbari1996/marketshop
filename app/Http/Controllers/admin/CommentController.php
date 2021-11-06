@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Else_;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':comment-suported');
+    }
     /**
      * Display a listing of the resource.
      *

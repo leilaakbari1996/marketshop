@@ -28,7 +28,7 @@ class UpdateProductRequest extends FormRequest
             'brand_id' => ['required','exists:brands,id'],
             'name' => ['required'],
             'slug' => ['required',],
-            'number' => ['required','integer'],
+            'number' => ['required','digits_between:1,999'],
             'image' => ['mimes:png,jpg'],
             'price' => ['required','integer'],
             'desc' => ['required']

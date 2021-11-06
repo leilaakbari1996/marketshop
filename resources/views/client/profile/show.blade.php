@@ -19,12 +19,15 @@
 					<ul class="nav nav-pills nav-pills-success nav-stacked">
 						<li class="active"><a data-toggle="pill" href="#about">بیوگرافی</a></li>
 						<li><a data-toggle="pill" href="#contact">ارتباط با پشتیبان سایت</a></li>
-                        <li> <a href="{{route('client.order.index')}}">لیست سفارشات من</a> </li>
+                        <li> <a href="{{route('client.order.index')}}">لیست خرید های من</a> </li>
                         <li>
                             <a href="{{route('client.like.index')}}">لیست علاقه مندی های من</a>
                         </li>
                         <li>
                             <a href="{{route('client.comment.index')}}">وضعیت نظرات شما</a>
+                        </li>
+                        <li>
+                            <a href="{{route('client.suport.index')}}">وضعیت ارتباط با پشتیبان</a>
                         </li>
 					</ul>
 

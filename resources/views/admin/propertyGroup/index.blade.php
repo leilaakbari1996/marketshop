@@ -37,7 +37,8 @@
                                             @csrf
                                             @method('delete')
                                             <div class="form-group">
-                                                <input type="submit" class="btn btn-sm btn-danger" value="حذف">
+                                                <input type="submit" class="btn btn-sm btn-danger" value="حذف"
+                                                onclick="return confirm('آیا مطمن هستید می خواهید این گروه ویژگی را حذف کنید؟')">
                                             </div>
                                         </form>
                                     </td>

@@ -1,3 +1,6 @@
+@php
+    use App\Models\Suport;
+@endphp
 @extends('admin.layout.master')
 @section('style')
     <style>
@@ -24,15 +27,15 @@
       <div class="row">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" id="card-body">
                 @if (count($suports) == 0)
                     <div class="alert alert-info alert-dismissible">
                         <h5><i class="icon fa fa-info"></i> توجه!</h5>
-                          هنوز هیچ پیامی از طرف کاربران فرستاده نشده...
+                           هیچ پیامی از طرف کاربران فرستاده نشده...
                     </div>
                 @else
                     @foreach ($suports as $suport)
-                        <div class="msg_suport">
+                        <div class="msg_suport_{{$suport->id}}" id="msg_suport_{{$suport->id}}">
                             <form action="{{route('admin.suport.store')}}" method="POST">
                                 @csrf
                                 <h3>{{$suport->user->name}}</h3>
@@ -54,6 +57,13 @@
                                 <button type="submit" class="btn btn-sm btn-success" style="float: left;margin-left:10px"
                                 onclick="Confirmation({{$suport->id}})">تایید </button>
                                 <div class="clear">
+                            </form>
+                            <form action="{{route('admin.suport.destroy',$suport)}}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-sm btn-danger" style="float: left;margin-left:10px"
+                                onclick="return confirm('آیا مطمن هستید می خواهید این پیام را حذف کنید؟')">حذف </button>
+                                <div class="clear"></div>
                             </form>
                         </div>
                     </div>
@@ -102,5 +112,29 @@
 
 </script>
 
+@endsection
+@section('script')
+    <script>
+        function deleted(supportId,count){
+            $.ajax({
+                type : 'delete',
+                url:'/adminpanel/suport/'+supportId,
+                data : {
+                    _token : '{{csrf_token()}}'
+                },success : function(data){
+                    alert('پیام کاربر با موفقیت حذف شد.');
+                    $('#msg_suport_'+supportId).remove();
+                    if(count == 0){
+                         $('#card-body').append(
+                             '<div class="alert alert-info alert-dismissible">'
+                                +'<h5><i class="icon fa fa-info"></i> توجه!</h5>'
+                                +' هیچ پیامی از طرف کاربران فرستاده نشده...'
+                            +'</div>'
+                         );
+                    }
+                }
+            });
+        }
+    </script>
 @endsection
 

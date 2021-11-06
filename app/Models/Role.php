@@ -19,7 +19,10 @@ class Role extends Model
         return $this->belongsToMany(Permission::class);
     }
     public static function findByTitle($title){
-        return self::query()->whereTitle($title)->firstOrFail();
+        return self::query()->whereTitle($title)->first();
+    }
+    public function haspermission($permission){
+        return $this->permissions()->where('title',$permission)->exists();
     }
 
 }

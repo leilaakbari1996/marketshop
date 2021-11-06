@@ -1,5 +1,6 @@
 @php
     use App\Models\Cart;
+    use App\Models\Product;
 @endphp
 @extends('client.layout.master')
 @section('style')
@@ -46,13 +47,24 @@
             <h1 class="title" itemprop="name">{{$product->name}}</h1>
             <div class="row product-info">
               <div class="col-sm-6">
-                <div class="image">
-                    <img class="img-responsive" itemprop="image" id="zoom_01" src="{{str_replace('public','/storage',$product->image)}}"
-                    title="{{$product->name}}" alt="{{$product->name}}"
-                    data-zoom-image="image/product/macbook_air_1-600x900.jpg" width="80%">
-                </div>
-                <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
-                <div class="image-additional" id="gallery_01"> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_1-600x900.jpg" data-image="image/product/macbook_air_1-350x525.jpg" title="لپ تاپ ایلین ور"> <img src="image/product/macbook_air_1-66x99.jpg" title="لپ تاپ ایلین ور" alt = "لپ تاپ ایلین ور"/></a> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_4-600x900.jpg" data-image="image/product/macbook_air_4-350x525.jpg" title="لپ تاپ ایلین ور"><img src="image/product/macbook_air_4-66x99.jpg" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_2-600x900.jpg" data-image="image/product/macbook_air_2-350x525.jpg" title="لپ تاپ ایلین ور"><img src="image/product/macbook_air_2-66x99.jpg" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a> <a class="thumbnail" href="#" data-zoom-image="image/product/macbook_air_3-600x900.jpg" data-image="image/product/macbook_air_3-350x525.jpg" title="لپ تاپ ایلین ور"><img src="image/product/macbook_air_3-66x99.jpg" title="لپ تاپ ایلین ور" alt="لپ تاپ ایلین ور" /></a> </div>
+                    <div class="image">
+                        <img class="img-responsive" itemprop="image" id="zoom_01"
+                        src="{{$product->image_path}}"
+                        title="{{$product->name}}" alt="{{$product->name}}"
+                        data-zoom-image="image/product/macbook_air_1-600x900.jpg" width="80%">
+                    </div>
+                    @if (count($pictures) > 0)
+                        <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
+                        <div class="image-additional" id="gallery_01">
+                            @foreach ($pictures as $picture)
+                                <a class="thumbnail" href="#" data-zoom-image="{{Product::get_image($picture->image)}}"
+                                data-image="{{Product::get_image($picture->image)}}" title="گالری تصاویر">
+                                    <img src="{{Product::get_image($picture->image)}}" title="گالری تصاویر}" alt = "گالری تصاویر"
+                                    width="70px"/>
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
               </div>
               <div class="col-sm-6">
                 <ul class="list-unstyled description">
@@ -88,52 +100,55 @@
                     </select>
                   </div>
                   <div class="cart">
-                    <div>
-                        @include('client.product.quantity',[
-                            'product' => $product,
-                            'condition' => 0
-                        ])
-                        @auth
-                            @php
-                                if($product->is_cart){
-                                    $cart = Cart::get_session('cart');
-                                }
-                            @endphp
-                            <button class="btn btn-lg btn-primary" type="button"
-                            @if ($product->is_cart)
-                                onClick="addToCart({{$product->id }},1)"
-                            @else
-                                onClick="addToCart({{$product->id }},0)"
-                            @endif
-                            >
-                                <span id="basket-{{$product->id}}">
-                                    @if ($product->is_cart)
-                                    بروز رسانی سبد خرید
-                                    @else
-                                        افزودن به سبد خرید
-                                    @endif
-                                </span>
-                            </button>
-                        @else
-                            <a href="{{route('client.register.create')}}">
+                      @if ($product->number < 16)
+                          <div class="text-danger">تعداد کالای باقی مانده در انبار {{$product->number}} عدد می باشد.</div>
+                      @endif
+                        <br><br><div>
+                            @include('client.product.quantity',[
+                                'product' => $product,
+                                'condition' => 0
+                            ])
+                            @auth
+                                @php
+                                    if($product->is_cart){
+                                        $cart = Cart::get_session('cart');
+                                    }
+                                @endphp
                                 <button class="btn btn-lg btn-primary" type="button"
-                                ><span>افزودن به سبد</span></button>
-                            </a>
+                                @if ($product->is_cart)
+                                    onClick="addToCart({{$product->id }},1)"
+                                @else
+                                    onClick="addToCart({{$product->id }},0)"
+                                @endif
+                                >
+                                    <span id="basket-{{$product->id}}">
+                                        @if ($product->is_cart)
+                                        بروز رسانی سبد خرید
+                                        @else
+                                            افزودن به سبد خرید
+                                        @endif
+                                    </span>
+                                </button>
+                            @else
+                                <a href="{{route('client.register.create')}}">
+                                    <button class="btn btn-lg btn-primary" type="button"
+                                    ><span>افزودن به سبد</span></button>
+                                </a>
+                            @endauth
+                        </div>
+                        <div>
+
+                            @auth
+                            <button class="like-{{$product->id}} wishlist" id="like-{{$product->id}}" type="button" data-toggle="tooltip"
+
+                                onClick="like({{$product->id}})">
+                                    <i class="fa fa-heart
+                                        @if ($product->is_like)
+                                            like
+                                        @endif
+                                    " ></i><span id="like-span-{{$product->id}}">@if ($product->is_like)حذف از علاقه مندی ها@else افزودن به علاقه مندی ها@endif</span>
+                                </button>
                         @endauth
-                    </div>
-                    <div>
-
-                        @auth
-                        <button class="like-{{$product->id}} wishlist" id="like-{{$product->id}}" type="button" data-toggle="tooltip"
-
-                            onClick="like({{$product->id}})">
-                                <i class="fa fa-heart
-                                    @if ($product->is_like)
-                                        like
-                                    @endif
-                                " ></i><span id="like-span-{{$product->id}}">@if ($product->is_like)حذف از علاقه مندی ها@else افزودن به علاقه مندی ها@endif</span>
-                            </button>
-                    @endauth
                       <br />
                       <button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button>
                     </div>
@@ -265,95 +280,14 @@
                   </div>
               </div>
             </div>
-            <h3 class="subtitle">محصولات مرتبط</h3>
-            <div class="owl-carousel related_pro">
-              <div class="product-thumb">
-                <div class="image"><a href="product.html"><img src="image/product/samsung_tab_1-220x330.jpg" alt="تبلت ایسر" title="تبلت ایسر" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="product.html">تبلت ایسر</a></h4>
-                  <p class="price"> <span class="price-new">98000 تومان</span> <span class="price-old">240000 تومان</span> <span class="saving">-5%</span> </p>
-                  <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+            @if ($relatedProducts->count() != 0)
+                <h3 class="subtitle">محصولات مرتبط</h3>
+                <div class="owl-carousel" style="display: block">
+                    @include('client.layout.relatedProducts',[
+                        'relatedProducts' => $relatedProducts
+                    ])
                 </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="product-thumb">
-                <div class="image"><a href="product.html"><img src="image/product/macbook_pro_1-220x330.jpg" alt=" کتاب آموزش باغبانی " title=" کتاب آموزش باغبانی " class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="product.html"> کتاب آموزش باغبانی </a></h4>
-                  <p class="price"> <span class="price-new">98000 تومان</span> <span class="price-old">120000 تومان</span> <span class="saving">-26%</span> </p>
-                </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="product-thumb">
-                <div class="image"><a href="product.html"><img src="image/product/macbook_1-220x330.jpg" alt="آیدیا پد یوگا" title="آیدیا پد یوگا" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="product.html">آیدیا پد یوگا</a></h4>
-                  <p class="price"> 900000 تومان </p>
-                  <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
-                </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="product-thumb">
-                <div class="image"><a href="product.html"><img src="image/product/ipod_shuffle_1-220x330.jpg" alt="لپ تاپ hp پاویلیون" title="لپ تاپ hp پاویلیون" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="product.html">لپ تاپ hp پاویلیون</a></h4>
-                  <p class="price"> 122000 تومان </p>
-                </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="product-thumb">
-                <div class="image"><a href="product.html"><img src="image/product/ipod_touch_1-220x330.jpg" alt="سامسونگ گلکسی s7" title="سامسونگ گلکسی s7" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="product.html">سامسونگ گلکسی s7</a></h4>
-                  <p class="price"> <span class="price-new">62000 تومان</span> <span class="price-old">122000 تومان</span> <span class="saving">-50%</span> </p>
-                </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="product-thumb">
-                <div class="image"><a href="product.html"><img src="image/product/ipod_shuffle_1-220x330.jpg" alt="لپ تاپ hp پاویلیون" title="لپ تاپ hp پاویلیون" class="img-responsive" /></a></div>
-                <div class="caption">
-                  <h4><a href="product.html">لپ تاپ hp پاویلیون</a></h4>
-                  <p class="price"> 122000 تومان </p>
-                </div>
-                <div class="button-group">
-                  <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
-                  <div class="add-to-links">
-                    <button type="button" data-toggle="tooltip" title="افزودن به علاقه مندی" onClick=""><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="افزودن به مقایسه" onClick=""><i class="fa fa-exchange"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            @endif
           </div>
         </div>
         <!--Middle Part End -->

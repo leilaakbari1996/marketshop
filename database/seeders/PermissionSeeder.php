@@ -16,9 +16,6 @@ class PermissionSeeder extends Seeder
     {
         /* Categories Permissions */
         Permission::query()->insert([[
-            'title' => 'read-category',
-            'lable' => 'مشاهده دسته بندی'
-        ],[
             'title' => 'update-category',
             'lable' => 'ویرایش دسته بندی'
         ],[
@@ -27,13 +24,13 @@ class PermissionSeeder extends Seeder
         ],[
             'title' => 'create-category',
             'lable' => 'ایجاد دسته بندی'
+        ],[
+            'title' => 'select-category-special',
+            'lable' => 'انتخاب دسته بندی ویژه'
         ]]
         );
         /* Brands Permissions */
         Permission::query()->insert([[
-            'title' => 'read-brand',
-            'lable' => 'مشاهده برند'
-        ],[
             'title' => 'update-brand',
             'lable' => 'ویرایش برند'
         ],[
@@ -46,9 +43,6 @@ class PermissionSeeder extends Seeder
         );
          /* offers Permissions */
          Permission::query()->insert([[
-            'title' => 'read-offer',
-            'lable' => 'مشاهده تخفیف'
-        ],[
             'title' => 'update-offer',
             'lable' => 'ویرایش تخفیف'
         ],[
@@ -61,9 +55,6 @@ class PermissionSeeder extends Seeder
         );
         /* products Permissions */
         Permission::query()->insert([[
-            'title' => 'read-product',
-            'lable' => 'مشاهده محصول'
-        ],[
             'title' => 'update-product',
             'lable' => 'ویرایش محصول'
         ],[
@@ -72,10 +63,93 @@ class PermissionSeeder extends Seeder
         ],[
             'title' => 'create-product',
             'lable' => 'ایجاد محصول'
+        ],[
+            'title' => 'select-products-special',
+            'lable' => 'انتخاب محصولات ویژه'
+        ],[
+            'title' => 'select-products-propesal',
+            'lable' => 'انتخاب محصولات پیشنهادی'
         ]]
         );
-
-         /* roles Permissions */
+        /**Offer Product Permissions */
+        Permission::query()->insert([[
+            'title' => 'update-offer',
+            'lable' => 'ویرایش تخفیف محصول'
+        ],[
+            'title' => 'delete-offer',
+            'lable' => 'حذف تخفیف محصول'
+        ],[
+            'title' => 'create-offer',
+            'lable' => 'ایجاد تخفیف محصول'
+        ]]);
+        /*PropertyGroup Permissions */
+        Permission::query()->insert([[
+            'title' => 'update-property-group',
+            'lable' => 'ویرایش گروه ویژگی'
+        ],[
+            'title' => 'delete-property-group',
+            'lable' => 'حذف گروه ویژگی'
+        ],[
+            'title' => 'create-property-group',
+            'lable' => 'ایجاد گروه ویژگی'
+        ]
+        ]);
+        /*Property Permissions */
+        Permission::query()->insert([[
+            'title' => 'update-property',
+            'lable' => 'ویرایش ویژگی'
+        ],[
+            'title' => 'delete-property',
+            'lable' => 'حذف ویژگی'
+        ],[
+            'title' => 'create-property',
+            'lable' => 'ایجاد ویژگی'
+        ]
+        ]);
+        /*slider Permissions */
+        Permission::query()->insert([[
+            'title' => 'update-slider',
+            'lable' => 'ویرایش اسلایدر'
+        ],[
+            'title' => 'delete-slider',
+            'lable' => 'حذف اسلایدر'
+        ],[
+            'title' => 'create-slider',
+            'lable' => 'ایجاد اسلایدر'
+        ]
+        ]);
+         /*user Permissions */
+         Permission::query()->insert([[
+            'title' => 'read-user',
+            'lable' => 'مشاهده کاربران'
+        ]
+             ,[
+            'title' => 'update-user',
+            'lable' => 'ویرایش نقش کاربر'
+        ],[
+            'title' => 'delete-user',
+            'lable' => 'حذف کاربر'
+        ]
+        ]);
+        /*comment Permissions */
+        Permission::query()->insert([
+            'title' => 'comment-suported',
+            'lable' => 'پشتیبانی کامنت ها'
+        ]
+        );
+        /* pictures Permissions */
+        Permission::query()->insert([[
+            'title' => 'update-picture',
+            'lable' => 'ویرایش گالری'
+        ],[
+            'title' => 'delete-picture',
+            'lable' => 'حذف گالری'
+        ],[
+            'title' => 'create-picture',
+            'lable' => 'ایجاد گالری'
+        ]
+        ]);
+        /* roles Permissions */
         Permission::query()->insert([[
             'title' => 'read-role',
             'lable' => 'مشاهده نقش'
@@ -90,26 +164,8 @@ class PermissionSeeder extends Seeder
             'lable' => 'ایجاد نقش'
         ]]
         );
-        /* pictures Permissions */
-        Permission::query()->insert([[
-            'title' => 'read-picture',
-            'lable' => 'مشاهده گالری'
-        ],[
-            'title' => 'update-picture',
-            'lable' => 'ویرایش گالری'
-        ],[
-            'title' => 'delete-picture',
-            'lable' => 'حذف گالری'
-        ],[
-            'title' => 'create-picture',
-            'lable' => 'ایجاد گالری'
-        ]
-        ]);
         /* discount Permissions */
         Permission::query()->insert([[
-            'title' => 'read-discount',
-            'lable' => 'مشاهده کد تخفیف'
-        ],[
             'title' => 'update-discount',
             'lable' => 'ویرایش کد تخفیف'
         ],[

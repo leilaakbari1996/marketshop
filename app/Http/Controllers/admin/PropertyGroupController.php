@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Models\Property;
+use Illuminate\Http\Request;
+use App\Models\PropertyGroup;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use App\Http\Requests\PropertyGroupRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Requests\UpdatePropertyGroupRequest;
-use App\Models\Property;
-use App\Models\PropertyGroup;
-use Illuminate\Http\Request;
 
 class PropertyGroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckPermission::class.':create-property-group')->only('create','store');
+        $this->middleware(CheckPermission::class.':update-property-group')->only(['edit','update']);
+        $this->middleware(CheckPermission::class.':delete-property-group')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -109,6 +116,10 @@ class PropertyGroupController extends Controller
      */
     public function destroy(PropertyGroup $propertyGroup)
     {
-        //
+        if($propertyGroup->properties()->count() != 0){
+            return redirect(route('admin.propertyGroup.index'))->withErrors('این گروه ویژگی نمی تواند حذف شود چون یک سری ویژگی متعلق به آن می باشد.');
+        }
+        $propertyGroup->delete();
+        return redirect(route('admin.propertyGroup.index'));
     }
 }
