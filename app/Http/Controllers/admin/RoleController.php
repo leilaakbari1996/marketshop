@@ -53,7 +53,7 @@ class RoleController extends Controller
     public function store(RoleRequest $request)
     {
         $role = Role::query()->create([
-             'title' => $request->get('title')
+            'title' => $request->get('title')
         ]);
         $role->permissions()->attach($request->get('permissions'));
         return redirect(route('admin.role.index'));

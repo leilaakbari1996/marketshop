@@ -31,9 +31,8 @@ class HomeController extends Controller
             $category_id = null;
         }
         return view('client.home',[
-            'title' => 'مارکت شاپ',
+            'title' => 'ویترین شاپ',
             'specialCategoryProduct' => Category::getIdAllSubCategory($category_id),
-            'specialCategory' => Specialcategory::all(),
             'propesalProducts' => Propesal::all(),
             'newProducts' => $newProducts,
             'productOffers' => Product::offer(),

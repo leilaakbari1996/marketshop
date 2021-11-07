@@ -76,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
                 'carts' => Cart::get_session('cart'),
                 'specialProducts' => Product::query()->where('is_special',1)->get(),
                 'bestsellers' => Orderdeital::Bestsellers(),
+                'specialCategory' => Specialcategory::all(),
             ]);
         });
         view()->composer('admin.*',function($view){

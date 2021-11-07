@@ -76,6 +76,7 @@ Route::prefix('')->name('client.')->group(function(){
     Route::post('/coupon',[ClientCouponController::class,'store'])->name('coupon.store');
     Route::post('/payment',[OrderController::class,'store'])->name('payment.store');
     Route::get('/suport',[SuportController::class,'index'])->name('suport.index');
+
 });
 Route::prefix('/adminpanel')->name('admin.')->middleware(CheckPermission::class.':read-view-dashbord','auth')->group(function(){
     Route::get('/',[AdminHomeController::class,'index'])->name('index');

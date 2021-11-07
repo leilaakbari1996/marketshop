@@ -8,7 +8,7 @@ use App\Models\Product;
       <div class="container">
         <div class="row">
           <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <h5>درباره مارکت شاپ</h5>
+            <h5>دسته های ویژه</h5>
             <p>قالب HTML فروشگاهی مارکت شاپ. این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</p>
             <img alt="" src="image/logo-small.png">
           </div>
@@ -19,50 +19,58 @@ use App\Models\Product;
               <li><a href="about-us.html">اطلاعات 0 تومان</a></li>
               <li><a href="about-us.html">حریم خصوصی</a></li>
               <li><a href="about-us.html">شرایط و قوانین</a></li>
+              <li>
+                  <a href="">گزارش خطا</a>
+              </li>
             </ul>
           </div>
-          <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-            <h5>خدمات مشتریان</h5>
-            <ul>
-              <li><a href="contact-us.html">تماس با ما</a></li>
-              <li><a href="#">بازگشت</a></li>
-              <li><a href="sitemap.html">نقشه سایت</a></li>
-            </ul>
+          <div class="column col-lg-4 col-md-2 col-sm-3 col-xs-12">
+            <h5>راه های ارتباطی</h5>
+
+                  <ul>
+                    <li class="mobile"><i class="fa fa-phone"></i>&nbsp; 09013608442</li>
+                    <li class="email"><a href="mailto:info@marketshop.com" style="text-transform:lowercase">
+                        <i class="fa fa-envelope"></i>&nbsp; leila.akbari1996@gmail.com</a>
+                    </li>
+                    <li>
+
+                        @auth
+                                <div class="row">
+                                    <div class="col-lg-1"><img src="/client/image/icons/support.png" alt="پشتیبانی"
+                                        width="40px" style="margin-right: -7px"></div>
+                                    <div class="col-lg-11">
+                                        <a href="{{route('client.user.show',auth()->user())}}">
+                                           <div style="margin-top: 10px;margin-right:10px">ارتباط با پشتیبان سایت</div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                &nbsp;
+                        @else
+                            <div class="row">
+                                <div class="col-lg-1"><img src="/client/image/icons/support.png" alt="پشتیبانی"
+                                    width="40px" style="margin-right: -7px;"></div>
+                                <div class="col-lg-11">
+                                    <a href="{{route('client.user.show',auth()->user())}}">
+                                    <div style="margin-top: 10px;margin-right:10px">ارتباط با پشتیبان سایت</div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        @endauth
+                    </li>
+                  </ul>
+
           </div>
           <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
             <h5>امکانات جانبی</h5>
             <ul>
-              <li><a href="#">برند ها</a></li>
+              <li><a href="">برند ها</a></li>
               <li><a href="#">کارت هدیه</a></li>
               <li><a href="#">بازاریابی</a></li>
               <li><a href="#">ویژه ها</a></li>
             </ul>
           </div>
-          <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-            <h5>حساب من</h5>
-            <ul>
-              <li><a href="#">حساب کاربری</a></li>
-              <li><a href="#">تاریخچه سفارشات</a></li>
-              <li><a href="#">لیست علاقه مندی</a></li>
-              <li><a href="#">خبرنامه</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="fpart-second">
-      <div class="container">
-        <div id="powered" class="clearfix">
-          <div class="powered_text pull-left flip">
-            <p>کپی رایت © 2016 فروشگاه شما</p>
-          </div>
-          <div class="social pull-right flip"> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/socialicons/facebook.png" alt="Facebook" title="Facebook"></a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/socialicons/twitter.png" alt="Twitter" title="Twitter"> </a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/socialicons/google_plus.png" alt="Google+" title="Google+"> </a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/socialicons/pinterest.png" alt="Pinterest" title="Pinterest"> </a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/socialicons/rss.png" alt="RSS" title="RSS"> </a> </div>
-        </div>
-        <div class="bottom-row">
-          <div class="custom-text text-center">
-            <p>این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.<br> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
-          </div>
-          <div class="payments_types"> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/payment/payment_paypal.png" alt="paypal" title="PayPal"></a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/payment/payment_american.png" alt="american-express" title="American Express"></a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/payment/payment_2checkout.png" alt="2checkout" title="2checkout"></a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/payment/payment_maestro.png" alt="maestro" title="Maestro"></a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/payment/payment_discover.png" alt="discover" title="Discover"></a> <a href="#" target="_blank"> <img data-toggle="tooltip" src="image/payment/payment_mastercard.png" alt="mastercard" title="MasterCard"></a> </div>
         </div>
       </div>
     </div>
