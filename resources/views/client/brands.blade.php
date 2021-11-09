@@ -1,3 +1,6 @@
+@php
+    use App\Models\Product;
+@endphp
 @extends('client.layout.master')
 
 @section('content')
@@ -6,15 +9,7 @@
         <!-- Breadcrumb Start-->
         <ul class="breadcrumb">
             <li><a href="{{route('client.index')}}"><i class="fa fa-home"></i></a></li>
-            @if ($categoryMain->parent)
-                <li><a href="{{route('client.category.index',$categoryMain->parent)}}">
-                    {{$categoryMain->parent->name}}</a></li>
-                @if ($categoryMain->parent->parent)
-                    <li><a href="{{route('client.category.index',$categoryMain->parent->parent)}}">
-                        {{$categoryMain->parent->parent->name}}</a></li>
-                @endif
-            @endif
-            <li><a href="#">{{$categoryMain->name}}</a></li>
+            <li><a href="#">برند ها</a></li>
         </ul>
         <!-- Breadcrumb End-->
         <div class="row">
@@ -25,7 +20,7 @@
             <!--Left Part End -->
             <!--Middle Part Start-->
             <div id="content" class="col-sm-9">
-            <h1 class="title">{{$categoryMain->name}}</h1>
+            <h1 class="title">برند ها</h1>
             <div class="product-filter">
                 <div class="row">
                 <div class="col-md-4 col-sm-5">
@@ -65,28 +60,31 @@
                 </div>
             </div>
             <br />
-            <div class="row products-category">
-                @foreach ($products as $product)
-                    <div class="product-layout product-list col-xs-12">
-                        @include('client.product.product',[
-                            'product' => $product
-                        ])
-                    </div>
-                @endforeach
-            </div>
-            <div class="row">
-                <div class="col-sm-6 text-left">
-                <ul class="pagination">
-                    <li class="active"><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">&gt;</a></li>
-                    <li><a href="#">&gt;|</a></li>
-                </ul>
+            @if (count($brands) == 0)
+                <div class="text-danger">هنوز هیچ برندی ثبت نشده است.لطفا صبور باشید.</div>
+            @else
+                <div class="row products-category">
+                    @foreach ($brands as $brand)
+                        <div class="product-layout product-list col-xs-12">
+                            <img src="{{Product::get_image($brand->image)}}" alt="{{$brand->name}}" width="100px">
+                            <p>{{$brand->name}}</p>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="col-sm-6 text-right">نمایش 1 تا 12 از {{count($products)}} (مجموع 2 صفحه)</div>
-            </div>
-            </div>
-            <!--Middle Part End -->
+                <div class="row">
+                        <div class="col-sm-6 text-left">
+                        <ul class="pagination">
+                            <li class="active"><span>1</span></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">&gt;</a></li>
+                            <li><a href="#">&gt;|</a></li>
+                        </ul>
+                        </div>
+                        <div class="col-sm-6 text-right">نمایش 1 تا 12 از {{count($brands)}} (مجموع 2 صفحه)</div>
+                    </div>
+                </div>
+                <!--Middle Part End -->
+            @endif
         </div>
         </div>
     </div>

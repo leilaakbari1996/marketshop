@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\BrandController as AdminBrandController;
+use App\Http\Controllers\admin\BugController as AdminBugController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CommentController as AdminCommentController;
 use App\Http\Controllers\admin\CouponController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\admin\SpecialProductController;
 use App\Http\Controllers\admin\SuportController as AdminSuportController;
 use App\Http\Controllers\admin\UserController as AdminUserController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\client\BrandController as ClientBrandController;
+use App\Http\Controllers\client\BugController;
 use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\Client\CommentController;
@@ -34,6 +37,7 @@ use App\Http\Controllers\client\RegisterController;
 use App\Http\Controllers\client\SuportController;
 use App\Http\Controllers\client\UserController;
 use App\Http\Middleware\CheckPermission;
+use App\Models\ProductProperty;
 use App\Models\Property;
 use App\Models\PropesalProduct;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +80,10 @@ Route::prefix('')->name('client.')->group(function(){
     Route::post('/coupon',[ClientCouponController::class,'store'])->name('coupon.store');
     Route::post('/payment',[OrderController::class,'store'])->name('payment.store');
     Route::get('/suport',[SuportController::class,'index'])->name('suport.index');
+    Route::get('/bug',[BugController::class,'create'])->name('bug.create');
+    Route::post('/bug',[BugController::class,'store'])->name('bug.store');
+    Route::get('/brands',[ClientBrandController::class,'index'])->name('brand.index');
+    Route::get('/coupons',[ClientCouponController::class,'index'])->name('coupon.index');
 
 });
 Route::prefix('/adminpanel')->name('admin.')->middleware(CheckPermission::class.':read-view-dashbord','auth')->group(function(){
@@ -102,8 +110,9 @@ Route::prefix('/adminpanel')->name('admin.')->middleware(CheckPermission::class.
     Route::resource('property', PropertyController::class);
     Route::get('/product/{product}/property',[ProductPropertyController::class,'create'])->name('product.property.create');
     Route::post('/property/{product}/property',[ProductPropertyController::class,'store'])->name('product.property.store');
-    Route::get('/property/{product}/property',[ProductPropertyController::class,'edit'])->name('product.property.edit');
-    Route::patch('/property/{product}/property',[ProductPropertyController::class,'update'])->name('product.property.update');
+    Route::post('/productproperty/{productProperty}',[ProductPropertyController::class,'edit'])->name('product.property.edit');
+    Route::patch('/productproperty/{productProperty}',[ProductPropertyController::class,'update'])->name('product.property.update');
+    Route::delete('/productproperty/{productProperty}',[ProductPropertyController::class,'destroy'])->name('product.property.destroy');
     Route::get('/propesal',[PropesalController::class,'index'])->name('propesal.index');
     Route::post('/propesal/{product}',[PropesalController::class,'update'])->name('propesal.update');
     Route::resource('coupon',CouponController::class);
@@ -112,4 +121,7 @@ Route::prefix('/adminpanel')->name('admin.')->middleware(CheckPermission::class.
     Route::post('/product/pictute/{product}',[Picturecontroller::class,'store'])->name('picture.store');
     Route::get('/product/pictute/{product}',[Picturecontroller::class,'index'])->name('picture.index');
     Route::delete('/product/pictute/{picture}',[Picturecontroller::class,'destroy'])->name('picture.destroy');
+    Route::get('/bug',[AdminBugController::class,'index'])->name('bug.index');
+    Route::patch('/bug/{bug}',[AdminBugController::class,'update'])->name('bug.update');
+    Route::delete('/bug/{bug}',[AdminBugController::class,'destroy'])->name('bug.destroy');
 });

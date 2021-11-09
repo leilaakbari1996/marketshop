@@ -21,7 +21,8 @@
 
                  <li class="nav-item has-treeview">
                     <a href="{{route('client.index')}}" class="nav-link">
-                      <i class="fa fa-home"></i>&nbsp;&nbsp;
+                        <img src="/admin/dist/img/icons/store.png" alt="فروشگاه"
+                        width="40px" style="width:25px">
                       <p>
                         فروشگاه
 
@@ -64,7 +65,8 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                      <i class="nav-icon fa fa-table"></i>
+                        <img src="/admin/dist/img/icons/role.png" alt="نقش ها"
+                        width="40px" style="width:25px">
                       <p>
                         نقش ها
                         <i class="fa fa-angle-left right"></i>
@@ -87,7 +89,8 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                      <i class="fa fa-envelope-o"></i>&nbsp;&nbsp;
+                        <img src="/admin/dist/img/icons/support.png" alt="پشتیبانی"
+                        width="40px" style="width:25px">
                       <p>
                         ارتباط پشتیبانی با مردم
                         @if ($suports->count() > 0)
@@ -103,6 +106,26 @@
                               <p>لیست</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fa fa-exclamation-circle"></i>
+                      <p>
+                        خطا دریافتی از طرف کاربر
+                        @if ($bugs->count() > 0)
+                            <span class="badge badge-danger navbar-badge">{{$bugs->count()}}</span>
+                        @endif
+                        <i class="fa fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{{route('admin.bug.index')}}" class="nav-link">
+                          <i class="nav-icon fa fa-list"></i>
+                          <p>لیست</p>
+                        </a>
+                      </li>
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
@@ -129,7 +152,8 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                      <i class="nav-icon fa fa-table"></i>
+                        <img src="/admin/dist/img/icons/category.png" alt="دسته بندی"
+                        width="20px">
                       <p>
                         دسته بندی ها
                         <i class="fa fa-angle-left right"></i>
@@ -159,7 +183,8 @@
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
-                      <i class="nav-icon fa fa-table"></i>
+                        <img src="/admin/dist/img/icons/brand.png" alt="برند"
+                        width="40px" style="width:25px">
                       <p>
                         برند ها
                         <i class="fa fa-angle-left right"></i>

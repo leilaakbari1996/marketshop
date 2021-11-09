@@ -21,7 +21,11 @@ class CouponController extends Controller
      */
     public function index()
     {
-        //
+        $date = date('d/m/Y');
+        return view('client.coupons',[
+            'title' => 'کد تخفیف',
+            'coupons' => Coupon::query()->where('expires_at',' > ',$date)->get()
+        ]);
     }
 
     /**
