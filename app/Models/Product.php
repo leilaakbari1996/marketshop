@@ -56,6 +56,9 @@ class Product extends Model
     public function propertyProduct(){
         return ProductProperty::query()->where('product_id', $this->id )->get();
     }
+    public function propertyProductGroup(PropertyGroup $propertyGroup){
+        return ProductProperty::query()->where('product_id', $this->id )->where('property_group_id',$propertyGroup->id)->get();
+    }
     public function getIsPropesalAttribute(){
        return Propesal::query()->where('product_id',$this->id)->exists();
     }

@@ -40,6 +40,7 @@
                                 <td>تخفیف</td>
                                 <td>تصویر</td>
                                 <td>گالری تصاویر</td>
+                                <td>ویژگی ها</td>
                                 <td>ویرایش</td>
                                 <td>حذف</td>
                             </tr>
@@ -69,6 +70,10 @@
                                     <td >
                                         <a class="btn btn-primary" style="color:#fff"
                                         href="{{route('admin.picture.create',$product)}}">گالری تصاویر</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('admin.product.property.create',$product)}}"
+                                        class="btn btn-warning">ویژگی ها</a>
                                     </td>
                                     <td ><a href="{{route('admin.product.edit',$product)}}"
                                         class="btn btn-sm btn-info">ویرایش</a></td>

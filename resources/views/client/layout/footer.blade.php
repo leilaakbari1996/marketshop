@@ -7,68 +7,57 @@ use App\Models\Product;
     <div class="fpart-first">
       <div class="container">
         <div class="row">
-          <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <h5>دسته های ویژه</h5>
-            <p>قالب HTML فروشگاهی مارکت شاپ. این یک بلاک مدیریت محتواست. شما میتوانید هر نوع محتوای html نوشتاری یا تصویری را در آن قرار دهید.</p>
-            <img alt="" src="image/logo-small.png">
+            <div class="column col-lg-4 col-md-2 col-sm-3 col-xs-12">
+                <h5>راه های ارتباطی</h5>
+
+                      <ul>
+                        <li class="mobile"><i class="fa fa-phone"></i>&nbsp; 09013608442</li>
+                        <li class="email"><a href="mailto:info@marketshop.com" class="link" style="text-transform:lowercase">
+                            <i class="fa fa-envelope"></i>&nbsp; leila.akbari1996@gmail.com</a>
+                        </li>
+                        <li>
+
+                            @auth
+                                <div class="row">
+                                    <a href="{{route('client.user.show',auth()->user())}}">
+                                        <div class="col-lg-1"><img src="/client/image/icons/support.png" alt="پشتیبانی"
+                                            width="25px" style="margin-right: -7px"></div>
+                                        <div class="col-lg-11">
+                                               <div style="margin-top: 10px;margin-right:-5px">ارتباط با پشتیبان سایت</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                &nbsp;
+                            @else
+                                <div class="row">
+                                    <a href="{{route('client.register.create')}}">
+                                        <div class="col-lg-1"><img src="/client/image/icons/support.png" alt="پشتیبانی"
+                                         style="margin-right: -7px;width:25px"></div>
+                                        <div class="col-lg-11">
+                                            <div style="margin-top: 10px;margin-right:-5px">ارتباط با پشتیبان سایت</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endauth
+                        </li>
+                      </ul>
+
+
+
           </div>
-          <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+          <div class="column col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <h5>اطلاعات</h5>
             <ul>
-              <li><a href="about-us.html">درباره ما</a></li>
-              <li><a href="about-us.html">اطلاعات 0 تومان</a></li>
-              <li><a href="about-us.html">حریم خصوصی</a></li>
-              <li><a href="about-us.html">شرایط و قوانین</a></li>
               <li>
-                  <a href="">گزارش خطا</a>
+                  <a href="{{route('client.bug.create')}}">گزارش خطا</a>
               </li>
             </ul>
           </div>
-          <div class="column col-lg-4 col-md-2 col-sm-3 col-xs-12">
-            <h5>راه های ارتباطی</h5>
-
-                  <ul>
-                    <li class="mobile"><i class="fa fa-phone"></i>&nbsp; 09013608442</li>
-                    <li class="email"><a href="mailto:info@marketshop.com" style="text-transform:lowercase">
-                        <i class="fa fa-envelope"></i>&nbsp; leila.akbari1996@gmail.com</a>
-                    </li>
-                    <li>
-
-                        @auth
-                                <div class="row">
-                                    <div class="col-lg-1"><img src="/client/image/icons/support.png" alt="پشتیبانی"
-                                        width="40px" style="margin-right: -7px"></div>
-                                    <div class="col-lg-11">
-                                        <a href="{{route('client.user.show',auth()->user())}}">
-                                           <div style="margin-top: 10px;margin-right:10px">ارتباط با پشتیبان سایت</div>
-                                        </a>
-                                    </div>
-
-                                </div>
-                                &nbsp;
-                        @else
-                            <div class="row">
-                                <div class="col-lg-1"><img src="/client/image/icons/support.png" alt="پشتیبانی"
-                                    width="40px" style="margin-right: -7px;"></div>
-                                <div class="col-lg-11">
-                                    <a href="{{route('client.user.show',auth()->user())}}">
-                                    <div style="margin-top: 10px;margin-right:10px">ارتباط با پشتیبان سایت</div>
-                                    </a>
-                                </div>
-
-                            </div>
-                        @endauth
-                    </li>
-                  </ul>
-
-          </div>
-          <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+          <div class="column col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <h5>امکانات جانبی</h5>
             <ul>
-              <li><a href="">برند ها</a></li>
-              <li><a href="#">کارت هدیه</a></li>
-              <li><a href="#">بازاریابی</a></li>
-              <li><a href="#">ویژه ها</a></li>
+              <li><a href="{{route('client.brand.index')}}">برند ها</a></li>
+              <li><a href="{{route('client.coupon.index')}}">کد تخفیف</a></li>
             </ul>
           </div>
         </div>

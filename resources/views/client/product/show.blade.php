@@ -4,6 +4,7 @@
 @endphp
 @extends('client.layout.master')
 @section('style')
+    <link rel="stylesheet" href="/client/css/image-zoom.css" />
     <style>
         .answer{
             background: green;
@@ -11,6 +12,7 @@
             padding: 5px;
 
         }
+
     </style>
 @endsection
 @section('content')
@@ -48,18 +50,21 @@
             <div class="row product-info">
               <div class="col-sm-6">
                     <div class="image">
-                        <img class="img-responsive" itemprop="image" id="zoom_01"
-                        src="{{$product->image_path}}"
-                        title="{{$product->name}}" alt="{{$product->name}}"
-                        data-zoom-image="image/product/macbook_air_1-600x900.jpg" width="80%">
+                        <div id="zoom-img">
+                            <img class="img-responsive" itemprop="image" id='image<a href="https://www.jqueryscript.net/zoom/">Zoom</a>'
+                            src="{{$product->image_path}}"
+                            title="{{$product->name}}" alt="{{$product->name}}"
+                             width="80%">
+
+                        </div>
                     </div>
                     @if (count($pictures) > 0)
                         <div class="center-block text-center"><span class="zoom-gallery"><i class="fa fa-search"></i> برای مشاهده گالری روی تصویر کلیک کنید</span></div>
-                        <div class="image-additional" id="gallery_01">
+                        <div class="image-additional my-gallery" id="gallery_01">
                             @foreach ($pictures as $picture)
                                 <a class="thumbnail" href="#" data-zoom-image="{{Product::get_image($picture->image)}}"
                                 data-image="{{Product::get_image($picture->image)}}" title="گالری تصاویر">
-                                    <img src="{{Product::get_image($picture->image)}}" title="گالری تصاویر}" alt = "گالری تصاویر"
+                                    <img src="{{Product::get_image($picture->image)}}" class="gallery-image" title="گالری تصاویر}" alt = "گالری تصاویر"
                                     width="70px"/>
                                 </a>
                             @endforeach
@@ -75,7 +80,7 @@
                         @if ($product->number != 0)
                             <span class="instock">موجود</span></li>
                         @else
-                            <span class="instock"> موجود نیست</span></li>
+                            <span class="btn btn-danger"> موجود نیست</span></li>
                         @endif
                 </ul>
                 <ul class="price-box">
@@ -88,19 +93,10 @@
 
                 </ul>
                 <div id="product">
-                  <h3 class="subtitle">انتخاب های در دسترس</h3>
-                  <div class="form-group required">
-                    <label class="control-label">رنگ</label>
-                    <select class="form-control" id="input-option200" name="option[200]">
-                      <option value=""> --- لطفا انتخاب کنید --- </option>
-                      <option value="4">مشکی </option>
-                      <option value="3">نقره ای </option>
-                      <option value="1">سبز </option>
-                      <option value="2">آبی </option>
-                    </select>
-                  </div>
+
+
                   <div class="cart">
-                      @if ($product->number < 16)
+                      @if ($product->number < 16 && $product->number != 0)
                           <div class="text-danger">تعداد کالای باقی مانده در انبار {{$product->number}} عدد می باشد.</div>
                       @endif
                         <br><br><div>
@@ -115,10 +111,14 @@
                                     }
                                 @endphp
                                 <button class="btn btn-lg btn-primary" type="button"
-                                @if ($product->is_cart)
-                                    onClick="addToCart({{$product->id }},1)"
+                                @if ($product->number == 0)
+                                   disabled
                                 @else
-                                    onClick="addToCart({{$product->id }},0)"
+                                    @if ($product->is_cart)
+                                        onClick="addToCart({{$product->id }},1)"
+                                    @else
+                                        onClick="addToCart({{$product->id }},0)"
+                                    @endif
                                 @endif
                                 >
                                     <span id="basket-{{$product->id}}">
@@ -183,16 +183,16 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <td colspan="2"><strong>{{$propertyGroup->name}}</strong></td>
+                                            <th colspan="2"><strong>{{$propertyGroup->propertyGroup()}}</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($product->propertyProduct() as $property)
+
                                             <tr>
-                                                <td>{{$property->property}}</td>
-                                                <td>{{$property->value}}</td>
+                                                <td>{{$propertyGroup->property()}}</td>
+                                                <td>{{$propertyGroup->value}}</td>
                                             </tr>
-                                        @endforeach
+
                                     </tbody>
                                 </table>
                         @endforeach
@@ -315,7 +315,24 @@
       </div>
     </div>
     <div id="fb-root"></div>
-    <script>(function(d, s, id) {
+    <script>
+        <script src="/client/jquery.min.js"></script>
+        $(function(){
+  $('#imageZoom').imageZoom();
+});
+$(function(){
+  $('.my-gallery').imageZoom({
+    $(this).imageZoom();
+  });
+});
+$(function(){
+  $('.my-gallery').imageZoom({
+    $(this).imageZoom({
+      zoom: 200
+    });
+  });
+});
+    (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;

@@ -3,7 +3,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-12">
+        <div class="col-lg-6 col-md-6 col-sm-12">
           <div class="card">
             <div class="card-body">
                 @if (count($properteis) == 0)
@@ -19,7 +19,6 @@
                             <tr>
                                 <td>#</td>
                                 <td> ویژگی</td>
-                                <td>ویرایش</td>
                                 <td>حذف</td>
                             </tr>
                         </thead>
@@ -28,10 +27,6 @@
                                 <tr>
                                     <td>{{$property->id}}</td>
                                     <td>{{$property->name}}</td>
-                                    <td>
-                                        <a href="{{route('admin.property.edit',$property)}}"
-                                        class="btn btn-primary btn-sm">ویرایش</a>
-                                    </td>
                                     <td>
                                         <form action="{{route('admin.property.destroy',$property)}}" method="post">
                                             @csrf

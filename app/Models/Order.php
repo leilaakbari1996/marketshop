@@ -12,27 +12,30 @@ class Order extends Model
     use HasFactory;
     protected $guarded = [];
     public  static function store_to_db($address,$postcode,$totalPriceWithDiscount){
-        $order = self::query()->create([
-            'user_id' => auth()->id(),
-            'price' => $totalPriceWithDiscount,
-            'postcode' => $postcode,
-            'address' => $address
-        ]);
-        foreach(Cart::get_session('cart') as $cart){
-            Orderdeital::query()->create([
-                'product_id' => $cart['product']->id,
-                'quantity' => $cart['quantity'],
-                'order_id' => $order->id,
-                'amount_unit' => $cart['product']->cost_with_discount
+        if(Cart::is_session('cart')){
+            $order = self::query()->create([
+                'user_id' => auth()->id(),
+                'price' => $totalPriceWithDiscount,
+                'postcode' => $postcode,
+                'address' => $address
+            ]);
+            foreach(Cart::get_session('cart') as $cart){
+                Orderdeital::query()->create([
+                    'product_id' => $cart['product']->id,
+                    'quantity' => $cart['quantity'],
+                    'order_id' => $order->id,
+                    'amount_unit' => $cart['product']->cost_with_discount
 
-            ]);
-            $product = $cart['product'];
-            $product->update([
-                'number' => $product->number - $cart['quantity']
-            ]);
+                ]);
+                $product = $cart['product'];
+                $product->update([
+                    'number' => $product->number - $cart['quantity']
+                ]);
+            }
+            Cart::removeAll();
+            return $order;
         }
-        Cart::removeAll();
-        return $order;
+        return redirect(route('client.cart.index'));
     }
     public function orderdeitals(){
         return $this->hasMany(Orderdeital::class);

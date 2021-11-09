@@ -18,7 +18,7 @@ class ProductPropertyController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -29,9 +29,11 @@ class ProductPropertyController extends Controller
     public function create(Product $product)
     {
         return view('admin.product.properties',[
-            'title' => 'ویژگی ها',
+            'title' => 'ویژگی های محصول '.$product->name,
             'product' => $product,
             'propertyGroups' => $product->category->propertyGroups,
+            'properties_product' => $product->propertyProduct(),
+            'properties_category' => $product -> category->propertyGroups,
         ]);
     }
 
@@ -59,7 +61,7 @@ class ProductPropertyController extends Controller
             }
         }
 
-        return redirect(route('admin.product.index'));
+        return redirect(route('admin.product.property.create',$product));
     }
 
     /**
@@ -79,13 +81,14 @@ class ProductPropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(ProductProperty $productProperty)
     {
         return view('admin.product.propertiesedit',[
-            'title' => 'ویرایش ویژگی ها',
-            'product' => $product,
-            'propertyGroups' => $product->category->propertyGroups,
-            'properties' => ProductProperty::query()->where('product_id',$product->id)->get()
+            'title' => 'ویرایش ویژگی '.$productProperty->property(),
+            'product' => $productProperty->product(),
+            'propertyGroup' => $productProperty->propertyGroup(),
+            'property' => $productProperty->property(),
+            'productProperty' => $productProperty
         ]);
     }
 
@@ -96,9 +99,12 @@ class ProductPropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request,ProductProperty $productProperty)
     {
-
+        $productProperty->update([
+            'value' => $request->get('propertyGroup-'.$productProperty->property_group_id.'-property-'.$productProperty->property_id)
+        ]);
+        return redirect(route('admin.product.property.create',$productProperty->product()));
     }
 
     /**
@@ -107,8 +113,10 @@ class ProductPropertyController extends Controller
      * @param  \App\Models\Property  $property
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Property $property)
+    public function destroy(ProductProperty $productProperty)
     {
-        //
+        $productProperty -> delete();
+        return redirect(route('admin.product.property.create',$productProperty->product()));
+
     }
 }

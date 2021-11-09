@@ -64,8 +64,13 @@
                     <input type="hidden" name="codepost" value="{{$codepost}}">
                     <input type="hidden" name="totalPriceWithDiscount" class="totalPriceWithDiscount"
                      value="{{Cart::totalPriceWithDiscount()}}">
-                    <input type="submit" value="پرداخت و ثبت نهایی سفارش" class="btn btn-primary"
-                    style="float:left " >
+                    @if (Cart::totalPriceWithDiscount() < 15000)
+                        <input type="button" value="پرداخت و ثبت نهایی سفارش" class="btn btn-primary"
+                        style="float:left " onclick="alert('مبلغ خرید باید بالای 15000تومان باشد.')">
+                    @else
+                        <input type="submit" value="پرداخت و ثبت نهایی سفارش" class="btn btn-primary"
+                        style="float:left " >
+                    @endif
                     <div class="clear"></div>
                 </form>
                 <!--Middle Part End -->
