@@ -2,6 +2,16 @@
     use App\Models\Product;
 @endphp
 @extends('client.layout.master')
+@section('style')
+    <style>
+        @media only screen and (max-width: 500px) {
+            .tabs{
+                padding-right: 0;
+            }
+        }
+
+    </style>
+@endsection
 @section('content')
 <div id="container">
     <div class="container">
@@ -23,7 +33,7 @@
           <!-- محصولات Tab Start -->
           <br><br>
           <div id="product-tab" class="product-tab">
-                <ul id="tabs" class="tabs">
+                <ul id="tabs" class="tabs" >
                     <li><a href="#tab-featured">ویژه</a></li>
                     <li><a href="#tab-latest">جدیدترین</a></li>
                     <li><a href="#tab-bestseller">پرفروش</a></li>

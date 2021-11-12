@@ -1,6 +1,19 @@
 @extends('client.layout.master')
 @section('style')
     <link type="text/css" href="/client/css/style.css" rel="stylesheet" />
+    <style>
+        @media only screen and (max-width: 600px) {
+            .nav{
+                height: 100px;
+            }
+            .active {
+                height: 100px;
+            }
+            .nav-pills{
+                padding-top: 5px;
+            }
+        }
+    </style>
 @endsection
 @section('content')
     <div style="width: 90%;margin:10px auto">
@@ -17,7 +30,10 @@
 				<div class="col-md-3 col-sm-4 col-xs-12">
 					<!-- navigation side bar + tab -->
 					<ul class="nav nav-pills nav-pills-success nav-stacked">
-						<li class="active"><a data-toggle="pill" href="#about">بیوگرافی</a></li>
+						<li class="active "><a data-toggle="pill" href="#about">بیوگرافی</a></li>
+                        @if ($check_permission)
+                            <li ><a href="{{route('admin.index')}}">رفتن به بخش مدیریت سایت</a></li>
+                        @endif
 						<li><a data-toggle="pill" href="#contact">ارتباط با پشتیبان سایت</a></li>
                         <li> <a href="{{route('client.order.index')}}">لیست خرید های من</a> </li>
                         <li>
@@ -32,7 +48,7 @@
 					</ul>
 
 
-				</div>
+				</div><br>
 				<!-- start tab content -->
 				<div class="col-md-6 col-sm-8 col-xs-12">
 					<div class="tab-content">

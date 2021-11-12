@@ -4,7 +4,7 @@
     @endphp
     <section class="content">
         <div class="container-fluid">
-            <h4>شما فقط میتوانید {{$shom}} اسلایدر را انتخاب کنید...</h4>
+            <p>شما فقط میتوانید {{$shom}} اسلایدر را انتخاب کنید...</p>
                 <div class="card card-default">
                     <!-- /.card-header -->
                     <div class="card-body">

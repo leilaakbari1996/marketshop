@@ -1,3 +1,6 @@
+@php
+    use App\Models\Product;
+@endphp
 @extends('admin.layout.master')
 @section('style')
     <style>
@@ -8,7 +11,7 @@
             margin: 20px;
             margin-bottom: 40px;
             padding: 10px;
-            height: 200px;
+            height: 300px;
         }
         .msg{
             border: 1px solid rgb(211, 204, 204);
@@ -44,21 +47,22 @@
                                 @csrf
                                 @method('delete')
                                 <span>خطای در یافتی از طرف کاربر</span>
-                                <div class="msg">
-                                    {{$bug->bug}}
-                                </div><br>
-                                <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('آیا مطمن هستید می خواهید این خطا را حل کنید؟')">تایید و حذف </button>
-                                <div>
-                                    <button id="slove-{{$bug->id}}" type="button" class="btn btn-success" onclick="slove({{$bug->id}})">
-                                        @if ($bug->is_slove == 1)
-                                           در حال حل این خطا
-                                        @else
-                                           اگر میخواهید خطا را حل کنید روی این دکمه کلیک کنید
+                                <div class="row">
+                                    <div class="col-lg-8 col-sm-12">
+                                        <div class="msg">
+                                            {{$bug->bug}}
+                                        </div><br>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-12">
+                                        @if ($bug->image != null)
+                                            <img src="{{Product::get_image($bug->image)}}" alt="خطا">
                                         @endif
-                                    </button>
-                                    <div class="clear"></div>
+                                    </div>
                                 </div>
+
+                                <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('آیا مطمن هستید این خطا را حل شده است؟')">تایید و حذف </button>
+                                <div class="clear"></div>
                             </form>
 
                         </div>

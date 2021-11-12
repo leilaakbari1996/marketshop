@@ -16,6 +16,7 @@ class CreateBugsTable extends Migration
         Schema::create('bugs', function (Blueprint $table) {
             $table->id();
             $table->text('bug');
+            $table->string('image')->nullable();
             $table->boolean('is_slove')->default(0);
             $table->timestamps();
         });
