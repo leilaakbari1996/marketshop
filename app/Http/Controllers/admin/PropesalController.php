@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Propesal;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 
 class PropesalController extends Controller
 {

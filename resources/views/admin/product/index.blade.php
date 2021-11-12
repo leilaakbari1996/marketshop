@@ -27,7 +27,7 @@
                          class="btn btn-sm btn-dark">ثبت محصول</a>
                     </div>
                 @else
-                    <table id="example2" class="table table-bordered table-hover div-table">
+                    <table id="example2" class="table table-bordered table-hover div-table card-body table-responsive p-0">
                         <thead>
                             <tr>
                                 <td >#</td>

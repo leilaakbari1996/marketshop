@@ -150,7 +150,7 @@
                                 </button>
                         @endauth
                       <br />
-                      <button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button>
+                      <!--<button type="button" class="wishlist" onClick=""><i class="fa fa-exchange"></i> مقایسه این محصول</button>-->
                     </div>
                   </div>
                 </div>

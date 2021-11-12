@@ -2,9 +2,9 @@
  <!-- Main Sidebar Container -->
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a  class="brand-link">
 
-      <span class="brand-text font-weight-light">پنل مدیریت</span>
+      <span class="brand-text font-weight-light text-white">پنل مدیریت</span>
     </a>
 
     <!-- Sidebar -->
@@ -112,7 +112,7 @@
                     <a href="#" class="nav-link">
                       <i class="nav-icon fa fa-exclamation-circle"></i>
                       <p>
-                        خطا دریافتی از طرف کاربر
+                        خطا های دریافتی
                         @if ($bugs->count() > 0)
                             <span class="badge badge-danger navbar-badge">{{$bugs->count()}}</span>
                         @endif

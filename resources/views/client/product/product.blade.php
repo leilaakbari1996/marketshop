@@ -48,7 +48,7 @@
                     " ></i>
                 </button>
             @endauth
-            <button type="button" data-toggle="tooltip" title="مقایسه این محصول" onClick=""><i class="fa fa-exchange"></i></button>
+            <!--<button type="button" data-toggle="tooltip" title="مقایسه این محصول" onClick=""><i class="fa fa-exchange"></i></button>-->
         </div>
     </div>
     </div>

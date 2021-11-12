@@ -56,6 +56,7 @@ class UserController extends Controller
         return view('client.profile.show',[
             'title' => 'پروفایل شما',
             'user' => $user,
+            'check_permission' => auth()->user()->role->hasPermission('read-view-dashbord')
         ]);
     }
 

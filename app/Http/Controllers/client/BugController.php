@@ -14,8 +14,10 @@ class BugController extends Controller
         ]);
     }
     public function store(Request $request){
+        $path = $request->file('image')->storeAs('public/bug',$request->file('image')->getClientOriginalName());
         Bug::query()->create([
-            'bug' => $request->get('bug')
+            'bug' => $request->get('bug'),
+            'image' => $path
         ]);
         session()->flash('success','گزارش خطا شما با موفقیت ثبت شد.متشکرم از شما!');
         return redirect(route('client.bug.create'));
