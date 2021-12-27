@@ -6,6 +6,10 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\OrderShipped;
+use App\Listeners\SendShipmentNotification;
+use App\Events\UserWasBanned;
+use App\Listeners\EmailBanNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,9 +19,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        OrderShipped::class => [
+            SendShipmentNotification::class,
         ],
+        UserWasBanned::class => [
+            EmailBanNotification::class
+        ]
     ];
 
     /**
@@ -29,4 +36,25 @@ class EventServiceProvider extends ServiceProvider
     {
         //
     }
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return true;
+    }
+    /**
+     * Get the listener directories that should be used to discover events.
+     *
+     * @return array
+     */
+    protected function discoverEventsWithin()
+    {
+        return [
+            $this->app->path('Listeners'),
+        ];
+    }
+
 }
